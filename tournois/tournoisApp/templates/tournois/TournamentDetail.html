@@ -10,7 +10,7 @@
         <li><a href= "{% url 'tournament:poolDetail' pool.id %}">{{pool.index}}</a></li>
         <ul>
             {% for team in pool.getTeams %}
-            <li><a href="{% url 'tournament:tournamentList' %}">{{team.Name}}</a></li>
+            <li><a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
             {% endfor %}
         </ul>
         {% endfor %}
