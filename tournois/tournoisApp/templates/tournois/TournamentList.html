@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+    <title>Valentin's tournaments</title>
+</head>
+<body>
+    <h1>Liste des tournois</h1>
+    {% if allTournament %}
+    <ul>
+        {% for tournament in allTournament %}
+        <li><a href= "https://google.fr">{{tournament.Name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>aucun tournois n'est disponible</p>
+    {% endif %}
+</body>
