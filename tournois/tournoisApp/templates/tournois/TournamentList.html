@@ -7,7 +7,7 @@
     {% if allTournament %}
     <ul>
         {% for tournament in allTournament %}
-        <li><a href= "https://google.fr">{{tournament.Name}}</a></li>
+        <li><a href= "{% url 'tournament:tournamentDetail' tournament.id %}">{{tournament.Name}}</a></li>
         {% endfor %}
     </ul>
     {% else %}

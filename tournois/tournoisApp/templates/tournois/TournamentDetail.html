@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>Valentin's tournaments</title>
+</head>
+<body>
+    <h1>{{tournament.Name}}</h1>
+    {% if tournament.pool_set.all %}
+    <ul>
+        {% for pool in tournament.pool_set.all %}
+        <li><a href= "{% url 'tournament:tournamentList' %}">{{pool.index}}</a></li>
+        <ul>
+            {% for team in pool.getTeams %}
+            <li><a href="{% url 'tournament:tournamentList' %}">{{team.Name}}</a></li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>aucune pool n'est organiser dans ce tournois</p>
+    {% endif %}
+</body>
