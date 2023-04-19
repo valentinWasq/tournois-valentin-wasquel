@@ -7,10 +7,10 @@ class Team(models.Model):
     Coach = models.CharField(max_length=50)
     ListOfPLayer = models.CharField(max_length=200)
 
-    def toString(self):
+    def __str__(self):
         return f"{self.Name} : coach: {self.Coach}; players: {self.ListOfPLayer}"
     
-    def Match_set(self):
+    def getMatch(self):
         return self.Matchs_team1.all() + self.Matchs_team2.all()
     
     def getScore(self):
@@ -51,7 +51,7 @@ class Match(models.Model):
     def Scores(self):
         return [self.Score1, self.Score2]
 
-    def toString(self):
+    def __str__(self):
         return f"match {self.Equipe1} against {self.Equipe2}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
 
 class Tournament(models.Model):
