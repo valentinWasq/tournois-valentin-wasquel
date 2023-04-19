@@ -7,4 +7,11 @@
     <p>{{match}}</p>
     <p><a href="{% url 'tournament:teamDetail' match.Team1.id %}">{{match.Team1.Name}}</a></p>
     <p><a href="{% url 'tournament:teamDetail' match.Team2.id %}">{{match.Team2.Name}}</a></p>
+    <p>
+        {% if isAuth %}
+        vous etes authentifier
+        {% else %}
+        vous etes anonymous
+        {% endif %}
+    </p>
 </body>

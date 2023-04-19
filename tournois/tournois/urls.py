@@ -21,4 +21,5 @@ from django.urls import include
 urlpatterns = [
     path('', include('tournoisApp.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]

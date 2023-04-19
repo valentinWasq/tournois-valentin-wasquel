@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 from .models import Tournament, Pool, Match, Team
 
@@ -28,7 +29,7 @@ def poolDetail(request, pk):
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
     match = Match.objects.get(id=pk)
-    context = {'match': match}
+    context = {'match': match, 'isAuth' : request.user.is_authenticated}
     return render(request, template_name, context)
 
 def teamDetail(request, pk):
