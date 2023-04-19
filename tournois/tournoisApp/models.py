@@ -61,4 +61,4 @@ class Match(models.Model):
         return [self.Score1, self.Score2]
 
     def __str__(self):
-        return f"match {self.Equipe1} against {self.Equipe2}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
+        return f"match {self.Team1.Name} against {self.Team2.Name}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
