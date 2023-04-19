@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Tournament, Pool
+from .models import Tournament, Pool, Match
 
 # Create your views here.
 def home(request):
@@ -23,4 +23,10 @@ def poolDetail(request, pk):
     template_name = 'tournois/PoolDetail.html'
     pool = Pool.objects.get(id=pk)
     context = {'pool': pool}
+    return render(request, template_name, context)
+
+def matchDetail(request, pk):
+    template_name = 'tournois/MatchDetail.html'
+    match = Match.objects.get(id=pk)
+    context = {'match': match}
     return render(request, template_name, context)
