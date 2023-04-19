@@ -36,7 +36,9 @@ class Pool(models.Model):
         AllMatch = self.match_set.all()
         AllTeams = []
         for match in AllMatch:
-            AllTeams += match.Teams()
+            for team in match.Teams():
+                if (team not in AllTeams):
+                    AllTeams += [team]
         return AllTeams
 
 
