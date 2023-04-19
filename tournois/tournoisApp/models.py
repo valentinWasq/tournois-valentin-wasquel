@@ -20,9 +20,16 @@ class Team(models.Model):
         for match in self.Matchs_team2.all():
             score += match.Score1
         return score
+        
+class Tournament(models.Model):
+    Name = models.CharField(max_length=50)
+    Location = models.CharField(max_length=50, null=True)
+    Dates = models.CharField(max_length=200, null=True)
+    NBPool = models.IntegerField(default=0)
+    NBTeamPerPool = models.IntegerField(default = 0)
 
 class Pool(models.Model):
-    #Tournois = models.ForeignKey(Tournois, on_delete=models.DO_NOTHING)
+    Tournois = models.ForeignKey(Tournament, on_delete=models.DO_NOTHING)
     index = models.IntegerField(default=-1)
     
     def getTeams(self):
@@ -53,10 +60,3 @@ class Match(models.Model):
 
     def __str__(self):
         return f"match {self.Equipe1} against {self.Equipe2}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
-
-class Tournament(models.Model):
-    Name = models.CharField(max_length=50)
-    Location = models.CharField(max_length=50, null=True)
-    Dates = models.CharField(max_length=200, null=True)
-    NBPool = models.IntegerField(default=0)
-    NBTeamPerPool = models.IntegerField(default = 0)
