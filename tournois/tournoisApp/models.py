@@ -28,6 +28,9 @@ class Tournament(models.Model):
     Dates = models.CharField(max_length=200, null=True)
     NBPool = models.IntegerField(default=0)
     NBTeamPerPool = models.IntegerField(default = 0)
+    NBPointOnWin = models.IntegerField(default=3)
+    NBPointOnTie = models.IntegerField(default=1)
+    NBPointOnLose = models.IntegerField(default=0)
 
 class Pool(models.Model):
     Tournois = models.ForeignKey(Tournament, on_delete=models.DO_NOTHING)
@@ -41,6 +44,30 @@ class Pool(models.Model):
                 if (team not in AllTeams):
                     AllTeams += [team]
         return AllTeams
+    
+    def getTeamsAndScores(self):
+        Result = {}
+        tournament = self.Tournois
+        for match in self.match_set.all():
+            if match.Score1 > match.Score2:
+                Score1 = tournament.NBPointOnWin
+                Score2 = tournament.NBPointOnLose
+            elif match.Score1 < match.Score2:
+                Score2 = tournament.NBPointOnWin
+                Score1 = tournament.NBPointOnLose
+            else:
+                Score2 = tournament.NBPointOnTie
+                Score1 = tournament.NBPointOnTie
+            if match.Team1 in Result:
+                Result[match.Team1] += Score1
+            else:
+                Result[match.Team1] = Score1
+            if match.Team2 in Result:
+                Result[match.Team2] += Score2
+            else:
+                Result[match.Team2] = Score2
+        orderedResult = {k: v for k, v in sorted(Result.items(), key=lambda item: -item[1])}
+        return orderedResult
 
 
 class Match(models.Model):

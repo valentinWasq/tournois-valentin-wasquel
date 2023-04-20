@@ -13,4 +13,13 @@
     {% else %}
     <p>aucun match dans cette pool</p>
     {% endif %}
+    {% if pool.getTeams %}
+    <ul>
+        {% for team, score in pool.getTeamsAndScores.items %}
+        <li><h3>{{score}}</h3>:<a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>There is no Teams in this pool</p>
+    {% endif %}
 {% endblock content %}
