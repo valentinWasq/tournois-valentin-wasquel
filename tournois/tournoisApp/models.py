@@ -62,3 +62,9 @@ class Match(models.Model):
 
     def __str__(self):
         return f"match {self.Team1.Name} against {self.Team2.Name}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
+
+class Comment(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    Match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    Date = models.DateField()
+    Content = models.CharField(max_length=500)
