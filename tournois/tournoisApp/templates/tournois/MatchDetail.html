@@ -18,7 +18,12 @@
     {% endif %}
     <p>
         {% if isAuth %}
-        vous etes authentifier
+        <form action="{% url 'tournament:addComment' %}" method='post'>
+            {% csrf_token %}
+            {{ commentForm }}
+            <input type="hidden" name="MatchId" id="MatchId" value={{match.id}}>
+            <input type="submit" value="Post the comment">
+        </form>
         {% else %}
         vous etes anonymous
         {% endif %}

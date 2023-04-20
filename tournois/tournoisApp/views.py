@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.utils import timezone
 
-from .models import Tournament, Pool, Match, Team
+from .models import Tournament, Pool, Match, Team, Comment
+from .forms import CommentForm
 
 # Create your views here.
 def home(request):
@@ -29,7 +33,8 @@ def poolDetail(request, pk):
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
     match = Match.objects.get(id=pk)
-    context = {'match': match, 'isAuth' : request.user.is_authenticated}
+    commentForm = CommentForm()
+    context = {'match': match, 'isAuth' : request.user.is_authenticated, 'commentForm' : commentForm}
     return render(request, template_name, context)
 
 def teamDetail(request, pk):
@@ -37,3 +42,24 @@ def teamDetail(request, pk):
     team = Team.objects.get(id=pk)
     context = {'team': team}
     return render(request, template_name, context)
+
+def addComment(request):
+    print("addComment called")
+    if (request.method == 'GET'):
+        print("c'est un get")
+        return HttpResponseRedirect(reverse('tournament:home'))
+    form = CommentForm(request.POST)
+    if (form.is_valid()):
+        print("test")
+        user = request.user
+        date = timezone.now()
+        content = form.cleaned_data["Content"]
+        matchId = request.POST["MatchId"]  
+        match = Match.objects.get(id=matchId)
+        comment = Comment(User=user, Date=date, Content=content, Match=match)
+        comment.save()
+        return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[matchId]))
+    else :
+        return HttpResponseRedirect(reverse('tournament:home'))
+
+
