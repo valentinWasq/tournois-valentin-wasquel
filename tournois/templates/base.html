@@ -7,6 +7,11 @@
 
 <body>
     {% block content %}{% endblock %}
+    {% if user.is_authenticated %}
+        <p>you are connected as {{user.username}}; <a href="/accounts/logout">logout</a></p>
+    {% else %}
+        <p><a href="/accounts/login">log in</a></p>
+    {% endif %}
     <footer>
         <em>&copy; ISAE-SUPAERO</em>
     </footer>
