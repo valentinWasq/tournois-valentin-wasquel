@@ -13,6 +13,10 @@
         <p><a href="/accounts/login">log in</a></p>
     {% endif %}
     <footer>
+        <a href="{% url 'tournament:home' %}">Home</a>
+        <br>
+        <a href="{% url 'tournament:tournamentList' %}">List of all tournament</a>
+        <br>
         <em>&copy; ISAE-SUPAERO</em>
     </footer>
 </body>
