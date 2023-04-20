@@ -11,15 +11,27 @@
         {% endfor %}
     </ul>
     {% else %}
-    <p>aucun match dans cette pool</p>
+        {% if user.is_superuser %}
+            {% if canGenerate %}
+            <a href="{% url 'tournament:generateMatchs' pool.id %}">generate all matchs</a>
+            {% else %}
+            <p>No match and not the right amount of team in the pool</p>
+            {% endif %}
+        {% else %}
+        <p>aucun match dans cette pool</p>
+        {% endif %}
     {% endif %}
-    {% if pool.getTeams %}
+    {% if pool.match_set.all %}
     <ul>
         {% for team, score in pool.getTeamsAndScores.items %}
         <li><h3>{{score}}</h3>:<a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
         {% endfor %}
     </ul>
     {% else %}
-    <p>There is no Teams in this pool</p>
+    <ul>
+        {% for team in pool.Teams.all %}
+        <li><a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+        {% endfor %}
+    </ul>
     {% endif %}
 {% endblock content %}

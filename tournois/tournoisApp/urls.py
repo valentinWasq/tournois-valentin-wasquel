@@ -11,5 +11,6 @@ urlpatterns = [
     path('team/<int:pk>', views.teamDetail, name='teamDetail'),
     path('addComment/', views.addComment, name='addComment'),
     path('removeComment/<int:pk>', views.removeComment, name='removeComment'),
-    path('editComment/<int:pk>', views.editComment, name='editComment')
+    path('editComment/<int:pk>', views.editComment, name='editComment'),
+    path('generateMatchs/<int:pk>', views.generateMatchs, name='generateMatchs')
 ]

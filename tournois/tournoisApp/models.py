@@ -25,7 +25,7 @@ class Team(models.Model):
 class Tournament(models.Model):
     Name = models.CharField(max_length=50)
     Location = models.CharField(max_length=50, null=True)
-    Dates = models.CharField(max_length=200, null=True)
+    Date = models.DateField(null=True)
     NBPool = models.IntegerField(default=0)
     NBTeamPerPool = models.IntegerField(default = 0)
     NBPointOnWin = models.IntegerField(default=3)
@@ -35,15 +35,7 @@ class Tournament(models.Model):
 class Pool(models.Model):
     Tournois = models.ForeignKey(Tournament, on_delete=models.DO_NOTHING)
     index = models.IntegerField(default=-1)
-    
-    def getTeams(self):
-        AllMatch = self.match_set.all()
-        AllTeams = []
-        for match in AllMatch:
-            for team in match.Teams():
-                if (team not in AllTeams):
-                    AllTeams += [team]
-        return AllTeams
+    Teams = models.ManyToManyField(Team)
     
     def getTeamsAndScores(self):
         Result = {}
@@ -68,10 +60,24 @@ class Pool(models.Model):
                 Result[match.Team2] = Score2
         orderedResult = {k: v for k, v in sorted(Result.items(), key=lambda item: -item[1])}
         return orderedResult
+    
+    def createAllMatch(self):
+        tournament = self.Tournois
+        allTeam = self.Teams.all()
+        if len(allTeam) < tournament.NBTeamPerPool:
+            return
+        listOfAllRencontre = []
+        for i in range(len(allTeam)):
+            for j in range(i+1, len(allTeam)):
+                listOfAllRencontre += [(allTeam[i], allTeam[j])]
+        for team1, team2 in listOfAllRencontre:
+            match = Match(Date=None, Location=tournament.Location, Team1=team1, Team2=team2, Pool=self)
+            match.save()
+
 
 
 class Match(models.Model):
-    Date = models.DateField()
+    Date = models.DateField(null=True)
     Location = models.CharField(max_length=50)
     Team1 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team1")
     Team2 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team2")

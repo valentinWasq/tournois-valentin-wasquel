@@ -27,8 +27,16 @@ def tournamentDetail(request, pk):
 def poolDetail(request, pk):
     template_name = 'tournois/PoolDetail.html'
     pool = Pool.objects.get(id=pk)
-    context = {'pool': pool}
+    canGenerate = (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool)
+    context = {'pool': pool, 'canGenerate':canGenerate}
     return render(request, template_name, context)
+
+def generateMatchs(request, pk):
+    pool = Pool.objects.get(id=pk)
+    if (len(pool.match_set.all()) == 0) and (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool) and (request.user.is_superuser):
+        pool.createAllMatch()
+        pool.save()
+    return HttpResponseRedirect(reverse('tournament:poolDetail',  args=[pool.id]))
 
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
