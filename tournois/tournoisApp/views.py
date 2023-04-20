@@ -66,3 +66,19 @@ def removeComment(request, pk):
     if request.user == comment.User:
         comment.delete()
     return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[matchId]))
+
+def editComment(request, pk):
+    comment = Comment.objects.get(id=pk)
+    if comment.User != request.user:
+        return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[comment.Match.id]))
+    if request.method == 'GET':
+        template_name = 'tournois/EditComment.html'
+        commentForm = CommentForm()
+        context = {"Comment" : comment, "commentForm": commentForm}
+        return render(request, template_name, context)
+    else:
+        form = CommentForm(request.POST)
+        if (form.is_valid()):
+            comment.Content = form.cleaned_data["Content"]
+            comment.save()
+        return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[comment.Match.id]))

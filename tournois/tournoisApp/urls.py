@@ -10,5 +10,6 @@ urlpatterns = [
     path('match/<int:pk>', views.matchDetail, name='matchDetail'),
     path('team/<int:pk>', views.teamDetail, name='teamDetail'),
     path('addComment/', views.addComment, name='addComment'),
-    path('removeComment/<int:pk>', views.removeComment, name='removeComment')
+    path('removeComment/<int:pk>', views.removeComment, name='removeComment'),
+    path('editComment/<int:pk>', views.editComment, name='editComment')
 ]

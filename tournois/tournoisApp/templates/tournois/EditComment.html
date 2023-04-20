@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Val's Tournament : edit Comment{% endblock title %}
+
+{% block content %}
+<h1>Comment Editor:</h1>
+<p>Old Comment : </p>
+<p>{{Comment}}</p>
+<form action="{% url 'tournament:editComment' Comment.id %}" method="post">
+    {% csrf_token %}
+    {{ commentForm }}
+    <input type="submit" value="Post the comment">
+</form>
+{% endblock content %}
