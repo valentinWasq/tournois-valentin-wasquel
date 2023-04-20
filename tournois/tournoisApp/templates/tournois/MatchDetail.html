@@ -17,7 +17,7 @@
     <p>There is no Comments on this match</p>
     {% endif %}
     <p>
-        {% if isAuth %}
+        {% if user.is_authenticated %}
         <form action="{% url 'tournament:addComment' %}" method='post'>
             {% csrf_token %}
             {{ commentForm }}

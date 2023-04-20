@@ -34,7 +34,7 @@ def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
     match = Match.objects.get(id=pk)
     commentForm = CommentForm()
-    context = {'match': match, 'isAuth' : request.user.is_authenticated, 'commentForm' : commentForm}
+    context = {'match': match, 'commentForm' : commentForm}
     return render(request, template_name, context)
 
 def teamDetail(request, pk):
