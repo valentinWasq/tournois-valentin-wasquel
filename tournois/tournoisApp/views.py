@@ -52,8 +52,7 @@ def teamDetail(request, pk):
     return render(request, template_name, context)
 
 def addComment(request):
-    if (request.method == 'GET'):
-        print("c'est un get")
+    if (request.method == 'GET') or (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('tournament:home'))
     form = CommentForm(request.POST)
     if (form.is_valid()):
