@@ -60,4 +60,9 @@ def addComment(request):
     else :
         return HttpResponseRedirect(reverse('tournament:home'))
 
-
+def removeComment(request, pk):
+    comment = Comment.objects.get(id=pk)
+    matchId = comment.Match.id
+    if request.user == comment.User:
+        comment.delete()
+    return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[matchId]))

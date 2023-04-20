@@ -10,7 +10,11 @@
     {% if match.comment_set.all %}
     <ul>
         {% for Comment in match.comment_set.all%}
-        <li>{{Comment}}</li>
+        <li>{{Comment}}
+            {% if user == Comment.User %}
+            <a href="{% url 'tournament:removeComment' Comment.id %}">delete</a>
+            {% endif %}    
+        </li>
         {% endfor %}
     </ul>
     {% else %}

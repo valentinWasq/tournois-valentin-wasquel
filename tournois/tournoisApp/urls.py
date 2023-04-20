@@ -9,5 +9,6 @@ urlpatterns = [
     path('pool/<int:pk>', views.poolDetail, name='poolDetail'),
     path('match/<int:pk>', views.matchDetail, name='matchDetail'),
     path('team/<int:pk>', views.teamDetail, name='teamDetail'),
-    path('addComment/', views.addComment, name='addComment')
+    path('addComment/', views.addComment, name='addComment'),
+    path('removeComment/<int:pk>', views.removeComment, name='removeComment')
 ]
