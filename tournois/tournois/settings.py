@@ -127,4 +127,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/tournament/'
 
-LOGOUT_REDIRECT8URL = ''
+LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/'
