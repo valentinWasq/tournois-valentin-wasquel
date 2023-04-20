@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<head>
-    <title>Valentin's tournaments</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Val's Tournament list{% endblock title %}
+{% block content %}
     <h1>Liste des tournois</h1>
     {% if allTournament %}
     <ul>
@@ -13,4 +12,4 @@
     {% else %}
     <p>aucun tournois n'est disponible</p>
     {% endif %}
-</body>
+{% endblock content %}

@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<head>
-    <title>Valentin's tournaments</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
     <h1>Voici la page d'acceuille</h1>
     <p><a href="{% url 'tournament:tournamentList' %}">List des tournois</a></p>
-</body>
+
+{% endblock content %}

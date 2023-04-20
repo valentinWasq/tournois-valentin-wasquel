@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<head>
-    <title>Valentin's tournaments</title>
-</head>
-<body>
-    <h1>{{team.name}}</h1>
+{% extends 'base.html' %}
+
+{% block title %}Val's Tournament : {{team.Name}}{% endblock title %}
+
+{% block content %}
+    <h1>{{team.Name}}</h1>
     <p>{{team}}</p>
-</body>
+{% endblock content %}

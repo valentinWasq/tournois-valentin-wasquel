@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<head>
-    <title>Valentin's tournaments</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Val's Tournament : pool {{pool.index}}{% endblock title %}
+
+{% block content %}
     <h1>{{pool.Tournois.Name}} : pool #{{pool.index}}</h1>
     {% if pool.match_set.all %}
     <ul>
@@ -13,4 +13,4 @@
     {% else %}
     <p>aucun match dans cette pool</p>
     {% endif %}
-</body>
+{% endblock content %}

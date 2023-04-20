@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<head>
-    <title>Valentin's tournaments</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Val's Tournament: Match {{match.Team1.Name}}:{{match.Team2.Name}}{% endblock title %}
+
+{% block content %}
     <h1>{{match.name}}</h1>
     <p>{{match}}</p>
     <p><a href="{% url 'tournament:teamDetail' match.Team1.id %}">{{match.Team1.Name}}</a></p>
@@ -28,4 +28,5 @@
         vous etes anonymous
         {% endif %}
     </p>
-</body>
+
+{% endblock content %}
