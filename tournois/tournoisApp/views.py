@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
+from datetime import datetime
 
 from .models import Tournament, Pool, Match, Team, Comment
 from .forms import CommentForm, SearchForm
@@ -12,10 +13,18 @@ def home(request):
     if request.method == "POST":
         searchForm = SearchForm(request.POST)
         if searchForm.is_valid():
-            query = searchForm.cleaned_data["query"]
-            matchs = Match.objects.filter(Team1__icontains=query).union(
-                Match.objects.filter(Team2__icontains=query)).union(
-                    Match.objects.filter(Date__date=query)).union(
+            query = searchForm.cleaned_data['query']
+            #check whether query is a date
+            try:
+                isdate = bool(datetime.strptime(query, "%Y/%m/%d"))
+            except ValueError:
+                isdate = False
+            if isdate:
+                matchs = Match.objects.filter(Date__date=datetime.strptime(query, "%Y/%m/%d").date())
+            #if not a date search for team names or scores
+            else :
+                matchs = Match.objects.filter(Team1__Name__icontains=query).union(
+                    Match.objects.filter(Team2__Name__contains=query)).union(
                         Match.objects.filter(Score1__contains=query)).union(
                             Match.objects.filter(Score2__contains=query))
             teams = Team.objects.filter(Name__icontains=query)

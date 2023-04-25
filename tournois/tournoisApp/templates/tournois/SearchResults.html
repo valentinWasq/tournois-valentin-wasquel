@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Résultats de recherche :</h2>
+    <p><a href="{% url 'tournament:home' %}">Retour à l'accueil</a></p>
+
+    {%if matchs or teams%}
+        {%if teams%}
+        <p>Team :</p>
+            <ul>
+            {%for team in teams%}
+                <li><a href = "{% url 'tournament:teamDetail' team.id %}"> {{team.Name}} </a></li>
+            {%endfor%}
+            </ul>
+        {%endif%}
+        {%if matchs%}
+        <p>Matchs :</p>
+            <ul>
+            {%for match in matchs%}
+                <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+            {%endfor%}
+        </ul>
+        {%endif%}
+    {%else%}
+    <p></p>No results, check date format (YYYY/MM/DD) or spelling </p>
+    {%endif%}
+
+{% endblock content %}

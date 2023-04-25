@@ -4,4 +4,9 @@
     <h1>Voici la page d'accueil</h1>
     <p><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></p>
 
+    <form method="post" action="{% url 'tournament:home'%}">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Search">
+    </form>
 {% endblock content %}
