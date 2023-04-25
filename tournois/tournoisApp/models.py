@@ -34,11 +34,17 @@ class Tournament(models.Model):
     NBPointOnWin = models.IntegerField(default=3)
     NBPointOnTie = models.IntegerField(default=1)
     NBPointOnLose = models.IntegerField(default=0)
+    
+    def __str__(self):
+        return self.Name
 
 class Pool(models.Model):
     Tournois = models.ForeignKey(Tournament, on_delete=models.DO_NOTHING)
     index = models.IntegerField(default=-1)
     Teams = models.ManyToManyField(Team)
+    
+    def __str__(self):
+        return "Poule " + str(self.index)
     
     #return a sorted dictionary of all the teams in this pool and they score
     def getTeamsAndScores(self):
