@@ -116,4 +116,5 @@ def editComment(request, pk):
     
 def testMap(request):
     template = "tournois/TestMap.html"
-    return render(request, template)
+    context = {"longitude" : 1.433333, "lattitude" : 43.6}
+    return render(request, template, context)

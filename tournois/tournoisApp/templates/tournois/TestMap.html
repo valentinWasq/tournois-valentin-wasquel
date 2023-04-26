@@ -9,7 +9,7 @@
 {% endblock script %}
 
 {% block content %}
-<div id="map" class="map" style="width: 400px; height: 400px"></div>
+<div id="map" class="map" style="width: 400px; height: 400px" start-longitude="{{longitude}}" start-lattitude="{{lattitude}}" zoom="{{zoom | default:'12'}}"></div>
 
 <script type="module" src="{% static 'map.js' %}"></script>
 
