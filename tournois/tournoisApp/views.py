@@ -113,3 +113,7 @@ def editComment(request, pk):
             comment.Content = form.cleaned_data["Content"]
             comment.save()
         return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[comment.Match.id]))
+    
+def testMap(request):
+    template = "tournois/TestMap.html"
+    return render(request, template)
