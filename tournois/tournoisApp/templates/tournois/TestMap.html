@@ -17,6 +17,6 @@
 {% endblock head %}
 
 {% block content %}
-<div id="map"></div>
+<div id="map" start-longitude="{{longitude}}" start-lattitude="{{lattitude}}" zoom="{{zoom | default:'12'}}"></div>
 <script type="module" src="{% static 'map2.js' %}"></script>
 {% endblock content %}
