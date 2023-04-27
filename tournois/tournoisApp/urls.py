@@ -12,5 +12,7 @@ urlpatterns = [
     path('addComment/',             views.addComment,       name='addComment'),         # add a comment, only post (redirect to matchDetail if successful, or home otherwise)
     path('removeComment/<int:pk>',  views.removeComment,    name='removeComment'),      # remove a comment, only post (redirect to matchDetail)
     path('editComment/<int:pk>',    views.editComment,      name='editComment'),        # edit a comment, get => view, post redirect to matchDetail
-    path('generateMatchs/<int:pk>', views.generateMatchs,   name='generateMatchs')      # call pool.createAllMatch if condition met, redirect to poolDetail
+    path('generateMatchs/<int:pk>', views.generateMatchs,   name='generateMatchs'),     # call pool.createAllMatch if condition met, redirect to poolDetail
+
+    path('testMap/',                views.testMap,          name='testMap')
 ]
