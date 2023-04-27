@@ -7,6 +7,7 @@
     <p>{{match}}</p>
     <p><a href="{% url 'tournament:teamDetail' match.Team1.id %}">{{match.Team1.Name}}</a></p>
     <p><a href="{% url 'tournament:teamDetail' match.Team2.id %}">{{match.Team2.Name}}</a></p>
+    {% include "tournois/MapModule.html" with longitude="1.433333" lattitude="43.6" %}
     {% if match.comment_set.all %}
     <ul>
         {% for Comment in match.comment_set.all%}
