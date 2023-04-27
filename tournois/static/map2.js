@@ -1,7 +1,11 @@
-var map = L.map('map').setView([51.505, -0.09], 13);
+var mapElem = document.getElementById('map')
+var coords = [parseFloat(mapElem.getAttribute("start-lattitude").replace(",", ".")), parseFloat(mapElem.getAttribute("start-longitude").replace(",", "."))]
+var zoom = parseFloat(mapElem.getAttribute("zoom").replace(",", "."))
+
+var map = L.map('map').setView(coords, zoom);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-print("mais whatt!!!!!!")
+var marker = L.marker(coords).addTo(map);
