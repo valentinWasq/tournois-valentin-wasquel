@@ -54,12 +54,12 @@
   const ctx3 = document.getElementById('GoalsTeam2');
 
   new Chart(ctx3, {
-    type: 'scatter',
+    type: 'bubble',
     data: {
-      labels: "Efficiency",
+      labels: ["les bleus","Olympique","PSG","OMarseille","les verres"],
       datasets: [{
-        label: '# of Votes',
-        data: [{x:1,y:2},{x:5,y:6},{x:4,y:5}],
+        label: "Buts/Encaissés",
+        data: [{x:1,y:2,r:10},{x:5,y:6,r:20},{x:4,y:5,r:50},{x:2,y:5,r:5},{x:3,y:3,r:15}],
         borderWidth: 1
       }]
     },
