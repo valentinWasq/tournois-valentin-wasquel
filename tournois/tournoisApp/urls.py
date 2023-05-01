@@ -3,6 +3,7 @@ from . import views
 
 app_name = 'tournament'
 urlpatterns = [
+    path('chart/<int:pk>',                    views.chart,             name='chart'),               # test chart
     path('',                        views.home,             name='home'),               # home page, simple view
     path('tournament/',             views.tournamentList,   name='tournamentList'),     # list of tournaments, simple view
     path('tournament/<int:pk>',     views.tournamentDetail, name='tournamentDetail'),   # detail of a tournament, simple view

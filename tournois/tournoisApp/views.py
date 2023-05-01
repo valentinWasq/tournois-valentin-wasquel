@@ -5,10 +5,62 @@ from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime
 
-from .models import Tournament, Pool, Match, Team, Comment
+from .models import Tournament, Pool, Match, Team, Comment,Point
 from .forms import CommentForm, SearchForm
 
 # Create your views here.
+def chart(request, pk):
+    label1=[]
+    data1=[]
+    data11=[]
+
+    pool=Pool.objects.get(id=pk)
+    allmatch=pool.match_set.all()
+    allteam=Team.objects.all()
+    for match in allmatch:
+        date=str(match.Date)
+        label1.append([match.Team1.Name, match.Team2.Name, date[0:10]])
+        data1.append(match.Score1+match.Score2)
+        data11.append(match.Encaisse1+match.Encaisse2)
+
+
+    label2=[]
+    data2=[]
+    label4=[]
+    data4=[]
+    
+    allmatch=pool.match_set.all()
+    for team in allteam:
+        scoreTeam=0
+        PointsTeam=0
+        for match in allmatch:
+            if match.Team1==team:
+                scoreTeam=scoreTeam+match.Score1
+                if match.Score1>match.Score2:
+                    PointsTeam=PointsTeam+3
+                elif match.Score1<match.Score2:
+                    PointsTeam=PointsTeam+0
+                else:
+                    PointsTeam=PointsTeam+1
+            if match.Team2==team:
+                scoreTeam=+match.Score2
+                if match.Score1<match.Score2:
+                    PointsTeam=PointsTeam+3
+                elif match.Score1>match.Score2:
+                    PointsTeam=PointsTeam+0
+                else:
+                    PointsTeam=PointsTeam+1
+        label2.append(team.Name)
+        label4.append(team.Name)
+        data2.append(scoreTeam)
+        data4.append(PointsTeam)
+          
+
+    context= {"label1":label1,"data1":data1,"data11":data11, "label2":label2,"data2":data2,"label4":label4,"data4":data4}
+    template_name = "src/index.html"
+    return render(request, template_name, context)
+
+
 def home(request):
     if request.method == "POST":
         searchForm = SearchForm(request.POST)
