@@ -6,10 +6,59 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import user_passes_test
 
-from .models import Tournament, Pool, Match, Team, Comment
+from .models import Tournament, Pool, Match, Team, Comment, Point
 from .forms import CommentForm, SearchForm, MatchForm
 
 # Create your views here.
+def chart(pk):
+    label1=[]
+    data1=[]
+    data11=[]
+
+    pool=Pool.objects.get(id=pk)
+    allmatch=pool.match_set.all()
+    allteam=Team.objects.all()
+    for match in allmatch:
+        date=str(match.Date)
+        label1.append([match.Team1.Name, match.Team2.Name, date[0:10]])
+        data1.append(match.Score1+match.Score2)
+        data11.append(match.Encaisse1+match.Encaisse2)
+
+
+    label2=[]
+    data2=[]
+    label4=[]
+    data4=[]
+    data3=[]
+
+    for teams,score in pool.getTeamsAndScores().items():
+        label4.append(teams.Name)
+        data4.append(score)
+
+    teamsAndScores= pool.getTeamsAndScores()
+    allmatch=pool.match_set.all()
+    for team in allteam:
+        scoreTeam=0
+        scoreEncaisse=0
+        for match in allmatch:
+            if match.Team1==team:
+                scoreTeam=scoreTeam+match.Score1
+                scoreEncaisse=scoreEncaisse+match.Encaisse1
+            if match.Team2==team:
+                scoreTeam=+match.Score2
+                scoreEncaisse=scoreEncaisse+match.Encaisse2
+        label2.append(team.Name)
+        data2.append(scoreTeam)
+        data3.append({"x":scoreEncaisse,"y":scoreTeam,"r":teamsAndScores[team]})
+   
+    
+
+
+    context=[label1,data1,data11,label2,data2,data3,label4,data4]
+    #context= {"label1":label1,"data1":data1,"data11":data11, "label2":label2,"data2":data2,"label4":label4,"data4":data4}
+    return context
+
+
 def home(request):
     if request.method == "POST":
         searchForm = SearchForm(request.POST)
@@ -54,7 +103,11 @@ def poolDetail(request, pk):
     template_name = 'tournois/PoolDetail.html'
     pool = Pool.objects.get(id=pk)
     canGenerate = (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool)
-    context = {'pool': pool, 'canGenerate':canGenerate}
+    contextchart=chart(pk)
+    context = {'pool': pool, 'canGenerate':canGenerate, 'label1':contextchart[0], 'data1':contextchart[1], 'data11':contextchart[2], 'label2':contextchart[3], 'data2':contextchart[4],'data3':contextchart[5], 'label4':contextchart[6],'data4':contextchart[7]}
+
+
+
     return render(request, template_name, context)
 
 def generateMatchs(request, pk):
