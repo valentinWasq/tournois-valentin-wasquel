@@ -7,7 +7,10 @@
     {% if pool.match_set.all %}
     <ul>
         {% for match in pool.match_set.all %}
-        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+        <li>
+            <a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a>
+            {% if user.is_superuser %} <a href="{% url 'tournament:editMatch' match.id %}">edit</a>{% endif %}
+        </li>
         {% endfor %}
     </ul>
     {% else %}
@@ -21,6 +24,7 @@
         <p>Aucun match dans cette poule</p>
         {% endif %}
     {% endif %}
+    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' 0 %}">create Match</a></p>{% endif %}
     {% if pool.match_set.all %}
     <ul>
         {% for team, score in pool.getTeamsAndScores.items %}

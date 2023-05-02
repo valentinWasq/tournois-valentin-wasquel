@@ -15,5 +15,5 @@ urlpatterns = [
     path('generateMatchs/<int:pk>', views.generateMatchs,   name='generateMatchs'),     # call pool.createAllMatch if condition met, redirect to poolDetail
 
     path('testMap/',                views.testMap,          name='testMap'),
-    path('editMatch/<int:pk>',      views.editMatch,        name='editMatch') # pk == -1 => create new match
+    path('editMatch/<int:pk>',      views.editMatch,        name='editMatch') # pk == 0 => create new match
 ]

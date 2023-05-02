@@ -11,3 +11,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 if (mapElem.getAttribute("start-point")) {
     var marker = L.marker(coords).addTo(map);
 }
+else {
+    var marker = null
+}

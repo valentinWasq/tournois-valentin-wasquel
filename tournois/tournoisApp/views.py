@@ -124,13 +124,14 @@ def testMap(request):
 @user_passes_test(lambda u: u.is_superuser)
 def editMatch(request, pk):
     if request.method == 'POST':
-        if pk == -1:
+        if pk == 0:
             form = MatchForm(request.POST)
             if form.is_valid():
                 newMatch = form.save()
                 newMatch.save()
                 return redirect(reverse("tournament:matchDetail", args=[newMatch.id]))
             else:
+                context = {"form" : form, "id":pk}
                 return render(request, template_name, context) # to change to show the issue!!!!
         else:
             match = Match.objects.get(pk=pk)
@@ -139,13 +140,15 @@ def editMatch(request, pk):
                 form.save()
                 return redirect(reverse("tournament:matchDetail", args=[pk]))
             else:
+                context = {"form" : form, "id":pk, "match":match}
                 return render(request, template_name, context) # to change to show the issue!!!!
     else:
-        if pk == -1:
+        if pk == 0:
             form = MatchForm()
+            match = None
         else:
             match = Match.objects.get(pk=pk)
             form = MatchForm(instance=match)
         template_name = "tournois/EditMatch.html"
-        context = {"form" : form, "id":pk}
+        context = {"form" : form, "id":pk, "match":match}
         return render(request, template_name, context)
