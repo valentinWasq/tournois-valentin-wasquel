@@ -1,0 +1,151 @@
+<div style="text-align: center; background-color: beige;"> 
+  <h1 style="color: darkgray;">POOL STATISTICS</h1>
+
+</div>
+
+
+<div class="chart-container" style=" float:left; top: 40px; position: relative;left: 100px; height:20%; width:40%">
+  <canvas id="BarGoalMatch"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+
+  const ctx = document.getElementById('BarGoalMatch');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{label1|safe}},
+      datasets: [{
+        label: 'Buts',
+        data: {{data1|safe}},
+        borderWidth: 1
+      },{
+        label: 'Encaissés',
+        data: {{data11|safe}},
+        borderWidth: 1
+      }],
+    },
+
+    options: {
+      scales: {
+        x:{
+          stacked:true
+        },
+        y: {
+          stacked:true
+        }
+      }
+    }
+  });
+</script> 
+
+<div class="float" style="float:right; position: relative; top: 25px; left:-100px ;height:20%; width:40%">
+  <canvas id="GoalsTeam2"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+  const ctx3 = document.getElementById('GoalsTeam2');
+
+  new Chart(ctx3, {
+    type: 'bubble',
+    data: {
+      labels: {{label2|safe}},
+      datasets: [{
+        label: "Buts/Encaissés",
+        data: {{data3|safe}},
+        borderWidth: 1
+      }]
+    },
+
+    options: {
+      scales:  {
+        x: {
+          type: 'linear',
+          position: 'bottom'
+        }
+      }
+    }
+  });
+</script> 
+
+<div class="float" style="float:left; position: relative;top: 100px; left: 250px; height:20%; width:25%">
+  <canvas id="GoalsTeam"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx2 = document.getElementById('GoalsTeam');
+
+  new Chart(ctx2, {
+    type: 'doughnut',
+    data:{
+      labels:  {{label2|safe}},
+      datasets: [{
+        label:"Goals",
+        data:  {{data2|safe}},
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(224,224, 224)',
+          'rgb(153, 255, 153)',
+        ],
+        hoverOffset: 4
+      }]
+    },
+
+    options: {
+      
+    }
+  });
+</script> 
+
+<div class="float" style="float:right; position: relative; top: 100px; left:-200px; height:20%; width:25%">
+  <canvas id="PointsTeam"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx4 = document.getElementById('PointsTeam');
+
+  new Chart(ctx4, {
+    type: 'polarArea',
+    data:{
+      labels:  {{label4|safe}},
+      datasets: [{
+        label: "Points",
+        data:  {{data4|safe}},
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(224,224, 224)',
+          'rgb(153, 255, 153)',
+        ],
+        hoverOffset: 4
+      }]
+    },
+
+    options: {
+      
+    }
+  });
+</script> 
+<div style="position: relative; left: 0; bottom: 100px; width: 200px; height: 800px; background-color:transparent;"></div>
+    </div>
+
+<div style="position: relative; top: 400px;">
+  <p >
+  
+  </p>
+</div>
+
