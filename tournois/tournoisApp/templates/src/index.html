@@ -4,7 +4,7 @@
 </div>
 
 
-<div class="chart-container" style=" float:left; position: relative; top: 40px; left: 100px; height:40vh; width:50%">
+<div class="chart-container" style=" float:left; top: 40px; position: relative;left: 100px; height:20%; width:40%">
   <canvas id="BarGoalMatch"></canvas>
 </div>
 
@@ -43,7 +43,7 @@
   });
 </script> 
 
-<div class="float" style="float:right; position: relative; top: 25px; left: 100px;height:40vh; width:50%">
+<div class="float" style="float:right; position: relative; top: 25px; left:-100px ;height:20%; width:40%">
   <canvas id="GoalsTeam2"></canvas>
 </div>
 
@@ -56,10 +56,10 @@
   new Chart(ctx3, {
     type: 'bubble',
     data: {
-      labels: ["les bleus","Olympique","PSG","OMarseille","les verres"],
+      labels: {{label2|safe}},
       datasets: [{
         label: "Buts/Encaissés",
-        data: [{x:1,y:2,r:10},{x:5,y:6,r:20},{x:4,y:5,r:50},{x:2,y:5,r:5},{x:3,y:3,r:15}],
+        data: {{data3|safe}},
         borderWidth: 1
       }]
     },
@@ -75,7 +75,7 @@
   });
 </script> 
 
-<div class="float" style="float:left; position: relative; top: 100px; left: 250px; height:40vh; width:25%">
+<div class="float" style="float:left; position: relative;top: 100px; left: 250px; height:20%; width:25%">
   <canvas id="GoalsTeam"></canvas>
 </div>
 
@@ -108,7 +108,7 @@
   });
 </script> 
 
-<div class="float" style="float:right; position: relative; top: 100px; left:-100px; height:40vh; width:25%">
+<div class="float" style="float:right; position: relative; top: 100px; left:-200px; height:20%; width:25%">
   <canvas id="PointsTeam"></canvas>
 </div>
 
@@ -140,3 +140,12 @@
     }
   });
 </script> 
+<div style="position: relative; left: 0; bottom: 100px; width: 200px; height: 800px; background-color:transparent;"></div>
+    </div>
+
+<div style="position: relative; top: 400px;">
+  <p >
+  
+  </p>
+</div>
+
