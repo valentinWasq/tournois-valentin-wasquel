@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, Textarea
-from .models import Comment
+from .models import Comment, Match
 
 class CommentForm(ModelForm):
     class Meta:
@@ -12,3 +12,8 @@ class SearchForm(forms.Form):
     widgets = {
             "content": Textarea(attrs={"cols": 80, "rows": 1}),
         }
+
+class MatchForm(ModelForm):
+    class Meta:
+        model = Match
+        fields = '__all__'

@@ -4,9 +4,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import Tournament, Pool, Match, Team, Comment
-from .forms import CommentForm, SearchForm
+from .forms import CommentForm, SearchForm, MatchForm
 
 # Create your views here.
 def home(request):
@@ -119,3 +120,32 @@ def testMap(request):
     template_name = "tournois/TestMap.html"
     context = {"longitude" : 1.433333, "lattitude" : 43.6}
     return render(request, template_name, context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def editMatch(request, pk):
+    if request.method == 'POST':
+        if pk == -1:
+            form = MatchForm(request.POST)
+            if form.is_valid():
+                newMatch = form.save()
+                newMatch.save()
+                return redirect(reverse("tournament:matchDetail", args=[newMatch.id]))
+            else:
+                return render(request, template_name, context) # to change to show the issue!!!!
+        else:
+            match = Match.objects.get(pk=pk)
+            form = MatchForm(request.POST, instance=match)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse("tournament:matchDetail", args=[pk]))
+            else:
+                return render(request, template_name, context) # to change to show the issue!!!!
+    else:
+        if pk == -1:
+            form = MatchForm()
+        else:
+            match = Match.objects.get(pk=pk)
+            form = MatchForm(instance=match)
+        template_name = "tournois/EditMatch.html"
+        context = {"form" : form, "id":pk}
+        return render(request, template_name, context)
