@@ -28,7 +28,9 @@ def chart(request, pk):
     data2=[]
     label4=[]
     data4=[]
-    
+    for teams,score in pool.getTeamsAndScores().items():
+        label4.append(teams.Name)
+        data4.append(score)
     allmatch=pool.match_set.all()
     for team in allteam:
         scoreTeam=0
@@ -36,24 +38,10 @@ def chart(request, pk):
         for match in allmatch:
             if match.Team1==team:
                 scoreTeam=scoreTeam+match.Score1
-                if match.Score1>match.Score2:
-                    PointsTeam=PointsTeam+3
-                elif match.Score1<match.Score2:
-                    PointsTeam=PointsTeam+0
-                else:
-                    PointsTeam=PointsTeam+1
             if match.Team2==team:
                 scoreTeam=+match.Score2
-                if match.Score1<match.Score2:
-                    PointsTeam=PointsTeam+3
-                elif match.Score1>match.Score2:
-                    PointsTeam=PointsTeam+0
-                else:
-                    PointsTeam=PointsTeam+1
         label2.append(team.Name)
-        label4.append(team.Name)
         data2.append(scoreTeam)
-        data4.append(PointsTeam)
           
 
     context= {"label1":label1,"data1":data1,"data11":data11, "label2":label2,"data2":data2,"label4":label4,"data4":data4}
