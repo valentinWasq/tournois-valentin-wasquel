@@ -6,23 +6,28 @@
 
     {%if matchs or teams%}
         {%if teams%}
-        <p>Team :</p>
-            <ul>
-            {%for team in teams%}
-                <li><a href = "{% url 'tournament:teamDetail' team.id %}"> {{team.Name}} </a></li>
+        <p>Team :
+          {%for team in teams%}
+            <a href = "{% url 'tournament:teamDetail' team.id %}"> {{team.Name}} </a>
             {%endfor%}
-            </ul>
+        </p>
         {%endif%}
         {%if matchs%}
         <p>Matchs :</p>
             <ul>
             {%for match in matchs%}
-                <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+                <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+                <p>Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </p>
             {%endfor%}
         </ul>
         {%endif%}
     {%else%}
-    <p></p>No results, check date format (YYYY/MM/DD) or spelling </p>
+    <p></p>Pas de résultats, vérifier le format de la date (YYYY-MM-DD) ou l'orthographe. </p>
     {%endif%}
-
+    <p> Faire une nouvelle recherche : </p>
+    <form method="post" action="{% url 'tournament:home'%}">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Search">
+    </form>
 {% endblock content %}

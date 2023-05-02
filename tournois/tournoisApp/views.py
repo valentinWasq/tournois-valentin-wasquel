@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -14,7 +15,7 @@ def home(request):
         searchForm = SearchForm(request.POST)
         if searchForm.is_valid():
             query = searchForm.cleaned_data['query']
-            #check whether query is a date
+            #check whether query is a date and search corresponding match
             try:
                 isdate = bool(datetime.strptime(query, "%Y-%m-%d"))
             except ValueError:
@@ -25,11 +26,22 @@ def home(request):
             #if not a date search for team names or scores
             else :
                 matchs = Match.objects.filter(Team1__Name__icontains=query).union(
-                    Match.objects.filter(Team2__Name__contains=query)).union(
-                        Match.objects.filter(Score1__contains=query)).union(
-                            Match.objects.filter(Score2__contains=query))
+                    Match.objects.filter(Team2__Name__icontains=query))
+                #cherche les match selon un score
+                scores = query.split("-")
+                if len(scores)==2:
+                    matchs = matchs.union(
+                        Match.objects.filter(Score1__contains=scores[0], Score2__contains=scores[1])).union(
+                            Match.objects.filter(Score2__contains=scores[0], Score1__contains=scores[1]))
+                #cherche les matchs selon une opposition
+                queries = query.split(" vs ")
+                if len(queries)==2:
+                    matchs = matchs.union(
+                        Match.objects.filter(Team1__Name__icontains=queries[0],Team2__Name__icontains=queries[1])).union(
+                            Match.objects.filter(Team2__Name__icontains=queries[0],Team1__Name__icontains=queries[1]))
             teams = Team.objects.filter(Name__icontains=query)
-            context = {"matchs" : matchs, "teams":teams}
+            newform = SearchForm()
+            context = {"matchs" : matchs, "teams":teams, "form":newform}
             template_name = "tournois/SearchResults.html"
             return render(request, template_name, context)
     else :
@@ -76,6 +88,7 @@ def teamDetail(request, pk):
     context = {'team': team}
     return render(request, template_name, context)
 
+@login_required
 def addComment(request):
     if (request.method == 'GET') or (not request.user.is_authenticated):
         return HttpResponseRedirect(reverse('tournament:home'))
@@ -92,6 +105,7 @@ def addComment(request):
     else :
         return HttpResponseRedirect(reverse('tournament:home'))
 
+@login_required
 def removeComment(request, pk):
     comment = Comment.objects.get(id=pk)
     matchId = comment.Match.id
@@ -99,6 +113,7 @@ def removeComment(request, pk):
         comment.delete()
     return HttpResponseRedirect(reverse('tournament:matchDetail',  args=[matchId]))
 
+@login_required
 def editComment(request, pk):
     comment = Comment.objects.get(id=pk)
     if comment.User != request.user:
