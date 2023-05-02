@@ -16,11 +16,12 @@ def home(request):
             query = searchForm.cleaned_data['query']
             #check whether query is a date
             try:
-                isdate = bool(datetime.strptime(query, "%Y/%m/%d"))
+                isdate = bool(datetime.strptime(query, "%Y-%m-%d"))
             except ValueError:
                 isdate = False
             if isdate:
-                matchs = Match.objects.filter(Date__date=datetime.strptime(query, "%Y/%m/%d").date())
+                date=datetime.strptime(query, "%Y-%m-%d").date()
+                matchs = Match.objects.filter(Date__date=date)
             #if not a date search for team names or scores
             else :
                 matchs = Match.objects.filter(Team1__Name__icontains=query).union(

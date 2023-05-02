@@ -28,6 +28,7 @@ class Tournament(models.Model):
     Name = models.CharField(max_length=50)
     Location = models.CharField(max_length=50, null=True)
     Date = models.DateField(null=True)
+    End_date = models.DateField(null = True, blank=True)
     NBPool = models.IntegerField(default=0)
     NBTeamPerPool = models.IntegerField(default = 0)
     # added theses field so different tournament can have different counting system
@@ -88,7 +89,7 @@ class Pool(models.Model):
 
 
 class Match(models.Model):
-    Date = models.DateField(null=True)
+    Date = models.DateTimeField(null=True)
     Location = models.CharField(max_length=50)
     Team1 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team1")
     Team2 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team2")

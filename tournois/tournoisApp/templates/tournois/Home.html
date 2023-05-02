@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Voici la page d'accueil</h1>
-    <p><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></p>
+    <p><a href="{% url 'tournament:tournamentList' %}">Aller à la liste des tournois</a></p>
 
     <form method="post" action="{% url 'tournament:home'%}">
         {% csrf_token %}
