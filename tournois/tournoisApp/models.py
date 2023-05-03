@@ -41,7 +41,7 @@ class Tournament(models.Model):
     def __str__(self):
         return self.Name
     
-    def generateKnockoutMatches(self):
+    def generateNextRound(self, round):
         matchList = []
         for i in range(self.NBPool)[::2]:
 
@@ -151,6 +151,7 @@ class Match(models.Model):
     Score1 = models.IntegerField(null=True, blank=True)
     Score2 = models.IntegerField(null=True, blank=True)
     isPool = models.BooleanField(default=True, blank=True)
+    Round = models.IntegerField(default=0, blank=True)
     Pool = models.ForeignKey(Pool, null=True, on_delete=models.DO_NOTHING)
     Tournament = models.ForeignKey(Tournament, null=True, on_delete=models.DO_NOTHING)
 
