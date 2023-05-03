@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}Val's Tournament list{% endblock title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head%}
 {% block content %}
+<nav class="crumbs">
+    <ol>
+        <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
+        <li class="crumb">Liste des tournois</li>
+    </ol>
+</nav>
+
     <h1>Liste des tournois</h1>
     {% if allTournament %}
     <ul>
