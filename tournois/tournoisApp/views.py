@@ -108,7 +108,8 @@ def tournamentList(request):
 def tournamentDetail(request, pk):
     template_name = 'tournois/TournamentDetail.html'
     tournament = Tournament.objects.get(id=pk)
-    context = {'tournament': tournament}
+    rounds = tournament.matchesSortedbyRound()
+    context = {'tournament': tournament, 'rounds': rounds}
     return render(request, template_name, context)
 
 def poolDetail(request, pk):

@@ -123,8 +123,22 @@ class Tournament(models.Model):
     """
         Return only the matches in the knockout phase
     """
-    def filterKnockoutMatches(self):
-        return Match.objects.filter(Tournament=self).filter(isPool=False)
+    def filterKnockoutMatches(self, round=None):
+        if round == None:
+            return Match.objects.filter(Tournament=self).filter(isPool=False)
+        else:
+            return Match.objects.filter(Tournament=self).filter(isPool=False).filter(Round=round)
+    
+    """
+        Return a list of query each containing the matches having the index
+        as their round number
+    """
+    def matchesSortedbyRound(self):
+        rounds = []
+        for i in range (1,int(math.log2(2*self.NBPool)+1)):
+            rounds.append(self.filterKnockoutMatches(i))
+        return rounds
+
 
 
 class Pool(models.Model):

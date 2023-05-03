@@ -16,15 +16,27 @@
         {% endfor %}
     </ul>
 
-        {% if tournament.filterKnockoutMatches.all %}
+        {% if rounds %}
+            
             <ul>
-                {% for match in tournament.filterKnockoutMatches.all %}
-                    <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+                {% for round in tournament.matchesSortedbyRound %}
+                {% comment %}
+                <p>Round</p>
+                <ul>
+                    <li>{{round}}</li>
+                </ul>
+                {% endcomment %}
+                    <p>Round</p>
+                    {% for match in round %}
+                        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+                    {% endfor %}
+                    
                 {% endfor %}
             </ul>
 
-            {% else %}
-            {% endif %}
+        {% else %}
+                <p> Les phases éliminatoire de ce tournoi ne sont pas générées</p>
+        {% endif %}
         <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate next round</a>
 
     {% else %}
