@@ -99,8 +99,6 @@ class Match(models.Model):
     Team2 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team2")
     Score1 = models.IntegerField(default=0)
     Score2 = models.IntegerField(default=0)
-    Encaisse1 = models.IntegerField(default=0)
-    Encaisse2 = models.IntegerField(default=0)
     Pool = models.ForeignKey(Pool, on_delete=models.DO_NOTHING)
 
     def getScoreString(self):

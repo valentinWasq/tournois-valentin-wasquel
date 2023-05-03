@@ -20,8 +20,8 @@ def chart(pk):
     for match in allmatch:
         date=str(match.Date)
         label1.append([match.Team1.Name, match.Team2.Name, date[0:10]])
-        data1.append(match.Score1+match.Score2)
-        data11.append(match.Encaisse1+match.Encaisse2)
+        data1.append(match.Score1)
+        data11.append(match.Score2)
 
 
     label2=[]
@@ -41,11 +41,11 @@ def chart(pk):
         scoreEncaisse=0
         for match in allmatch:
             if match.Team1==team:
-                scoreTeam=scoreTeam+match.Score1
-                scoreEncaisse=scoreEncaisse+match.Encaisse1
+                scoreTeam=+match.Score1
+                scoreEncaisse=+match.Score2
             if match.Team2==team:
                 scoreTeam=+match.Score2
-                scoreEncaisse=scoreEncaisse+match.Encaisse2
+                scoreEncaisse=+match.Score1
         label2.append(team.Name)
         data2.append(scoreTeam)
         data3.append({"x":scoreEncaisse,"y":scoreTeam,"r":teamsAndScores[team]})
