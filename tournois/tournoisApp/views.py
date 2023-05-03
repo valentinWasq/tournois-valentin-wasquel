@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -62,6 +62,17 @@ def generateMatchs(request, pk):
         pool.createAllMatch()
         pool.save()
     return HttpResponseRedirect(reverse('tournament:poolDetail',  args=[pool.id]))
+
+"""
+    This view displays the tree of the knockout phase of the tournament
+    The view is integrated to the TournamentDetail template
+"""
+def generateMatchTree(request, pk):
+    tournament = Tournament.objects.get(id=pk)  
+    tournament.generateKnockoutMatches() 
+    tournament.save()
+    return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
+
 
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'

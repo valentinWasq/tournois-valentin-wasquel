@@ -6,6 +6,7 @@ urlpatterns = [
     path('',                        views.home,             name='home'),               # home page, simple view
     path('tournament/',             views.tournamentList,   name='tournamentList'),     # list of tournaments, simple view
     path('tournament/<int:pk>',     views.tournamentDetail, name='tournamentDetail'),   # detail of a tournament, simple view
+    path('generateTree/<int:pk>',   views.generateMatchTree,name='generateMatchTree'),
     path('pool/<int:pk>',           views.poolDetail,       name='poolDetail'),         # detail of a pool, simple view
     path('match/<int:pk>',          views.matchDetail,      name='matchDetail'),        # detail of a match, simple view
     path('team/<int:pk>',           views.teamDetail,       name='teamDetail'),         # detail of a team, simple view

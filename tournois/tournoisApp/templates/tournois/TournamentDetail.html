@@ -15,7 +15,20 @@
         </ul>
         {% endfor %}
     </ul>
+
+        {% if tournament.filterKnockoutMatches.all %}
+            <ul>
+                {% for match in tournament.filterKnockoutMatches.all %}
+                    <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate all matchs</a>
+        {% endif %}
+        
     {% else %}
+
     <p>aucune poule n'est organisée dans ce tournoi</p>
     {% endif %}
 {% endblock content %}

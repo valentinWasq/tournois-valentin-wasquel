@@ -38,6 +38,47 @@ class Tournament(models.Model):
     
     def __str__(self):
         return self.Name
+    
+    def generateKnockoutMatches(self):
+        matchList = []
+        for i in range(self.NBPool)[::2]:
+
+            # ith pool
+            pool1 = self.pool_set.all()[i]
+            if len(pool1.match_set.all()) < self.NBTeamPerPool * (self.NBTeamPerPool-1)/2:
+                pool1.createAllMatch()
+
+            # i+1th pool
+            pool2 = self.pool_set.all()[i+1]
+            if len(pool2.match_set.all()) < self.NBTeamPerPool * (self.NBTeamPerPool-1)/2:
+                pool2.createAllMatch()
+
+            # First team of the ith pool
+            # print(list(pool1.getTeamsAndScores().items())[0][0].__class__)
+            team1 = list(pool1.getTeamsAndScores().items())[0][0]
+            # Second team of he i+1th pool
+            # print(list(pool2.getTeamsAndScores().items()))
+            # print(list(pool2.getTeamsAndScores().items())[1][0])
+            team2 = list(pool2.getTeamsAndScores().items())[1][0]
+            # First team of he i+1th pool
+            team3 = list(pool2.getTeamsAndScores().items())[0][0]
+            # Second team of he ith pool
+            team4 = list(pool1.getTeamsAndScores().items())[1][0]
+            
+            match1 = Match(Date=None, Location=self.Location, Team1=team1, Team2=team2, isPool=False, Tournament=self)
+            match1.save()
+            matchList.append(match1)
+
+            match2 = Match(Date=None, Location=self.Location, Team1=team3, Team2=team4, isPool=False, Tournament=self)
+            match2.save()
+            matchList.append(match1)
+
+        # return matchList
+
+    # Return only the match in the knockout phase
+    def filterKnockoutMatches(self):
+        return Match.objects.filter(Tournament=self).filter(isPool=False)
+
 
 class Pool(models.Model):
     Tournois = models.ForeignKey(Tournament, on_delete=models.DO_NOTHING)
@@ -95,7 +136,10 @@ class Match(models.Model):
     Team2 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team2")
     Score1 = models.IntegerField(default=0)
     Score2 = models.IntegerField(default=0)
-    Pool = models.ForeignKey(Pool, on_delete=models.DO_NOTHING)
+    isPool = models.BooleanField(default=True, blank=True)
+    Pool = models.ForeignKey(Pool, null=True, on_delete=models.DO_NOTHING)
+    Tournament = models.ForeignKey(Tournament, null=True, on_delete=models.DO_NOTHING)
+
 
     def getScoreString(self):
         return str(self.Score1) + ':' + str(self.Score2)
