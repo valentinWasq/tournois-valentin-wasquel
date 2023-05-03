@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
-
 {% block title %}Val's Tournament : {{tournament.Name}}{% endblock title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head%}
 
 {% block content %}
+
+<nav class="crumbs">
+    <ol>
+        <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
+        <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
+        <li class="crumb">{{tournament.Name}}</li>
+    </ol>
+</nav>
 
     <h1>{{tournament.Name}}</h1>
     {% if tournament.pool_set.all %}

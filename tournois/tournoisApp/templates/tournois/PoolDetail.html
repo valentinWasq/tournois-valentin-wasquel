@@ -5,7 +5,20 @@
 
 {% block title %}Val's Tournament : pool {{pool.index}}{% endblock title %}
 
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head%}
+
 {% block content %}
+<nav class="crumbs">
+    <ol>
+        <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
+        <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
+        <li class="crumb"><a href="{% url 'tournament:tournamentDetail' pool.Tournois.id %}">{{pool.Tournois.Name}}</a></li>
+        <li class="crumb">Poule n°{{pool.index}}</li>
+    </ol>
+</nav>
     
     <img width="100" height="100" src="{% static 'KingJames.jpg' %}"/>
     <div style="width: 1000px; height: 2000px; background-color:transparent;z-index:-1;">
