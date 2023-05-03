@@ -55,8 +55,14 @@ class Tournament(models.Model):
     def generateNextRound(self, round):
         matchList = []
 
-        if round < 1 or round > math.log2(2*self.NBPool):
-                print("Incorrect number of round")
+        # Doesn't generate if there are already the right number of match
+        if len(self.filterKnockoutMatches(round)) >= 2**(math.log2(2*self.NBPool)-round):
+            print("Round already generated")
+            return
+
+        elif round < 1 or round > math.log2(2*self.NBPool):
+            print("Incorrect number of round")
+            return
 
         # Generate the first round after the pool phase
         elif round == 1 :
@@ -254,6 +260,12 @@ class Match(models.Model):
             return f"match {self.Team1.Name} against {self.Team2.Name}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
         else:
             return f"match {self.Team1.Name} against {self.Team2.Name}, \nat : {self.Location}, {self.Date}"
+
+    def shortStr(self):
+        if self.Score1!=None and self.Score2!=None:
+            return f"{self.Team1.Name} {self.getScoreString()} {self.Team2.Name}"
+        else:
+            return f"{self.Team1.Name} : {self.Team2.Name}"
 
 class Comment(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)

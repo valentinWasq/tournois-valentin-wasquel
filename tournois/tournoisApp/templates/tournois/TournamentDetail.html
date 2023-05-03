@@ -1,9 +1,25 @@
+
 {% extends 'base.html' %}
+
 
 {% block title %}Val's Tournament : {{tournament.Name}}{% endblock title %}
 
 {% block content %}
-    <h1>{{tournament.Name}}</h1>
+
+<style>
+    .matchbox {
+        box-sizing: border-box;
+        color: #973b3b;
+        border: 2px solid #858585;
+        background: white;
+        width: 20%;
+        height: 6%;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<h1>{{tournament.Name}}</h1>
     {% if tournament.pool_set.all %}
     <ul>
         {% for pool in tournament.pool_set.all %}
@@ -15,32 +31,36 @@
         </ul>
         {% endfor %}
     </ul>
+    
+    {% if rounds %}
+    
+        {% for round in tournament.matchesSortedbyRound %}
+            <p>Round</p>
 
-        {% if rounds %}
             
-            <ul>
-                {% for round in tournament.matchesSortedbyRound %}
-                {% comment %}
-                <p>Round</p>
-                <ul>
-                    <li>{{round}}</li>
-                </ul>
-                {% endcomment %}
-                    <p>Round</p>
-                    {% for match in round %}
-                        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
-                    {% endfor %}
+            {% for match in round %}
+                <li style="list-style-type: none;">
                     
-                {% endfor %}
-            </ul>
-
-        {% else %}
-                <p> Les phases éliminatoire de ce tournoi ne sont pas générées</p>
-        {% endif %}
-        <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate next round</a>
-
+                        <a class="matchbox" href= "{% url 'tournament:matchDetail' match.id %}">{{match.shortStr}}</a>
+                    
+                </li>
+                
+            {% endfor %}
+            
+        
+        {% endfor %}
+            
+        
+        
     {% else %}
-
-    <p>aucune poule n'est organisée dans ce tournoi</p>
+    <p> Les phases éliminatoire de ce tournoi ne sont pas générées</p>
+    {% endif %}
+    <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate next round</a>
+    
+    {% else %}
+            
+        <p>aucune poule n'est organisée dans ce tournoi</p>
     {% endif %}
 {% endblock content %}
+
+
