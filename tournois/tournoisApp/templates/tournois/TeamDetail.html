@@ -4,7 +4,6 @@
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
 {% endblock head%}
 
 {% block content %}
@@ -17,20 +16,37 @@
         <li class="crumb"> {{team.Name}} </li>
     </ol>
 </nav>
+
+
     <h1>{{team.Name}}</h1>
-    <p><B> Coach :</B> {{team.Coach}} </p>
-    <p><B> Joueurs :</B> {{team.ListOfPLayer}} </p>
+    <div class="topbanner"></div>
+    <img class="topimg" width="300" height="400" src="{% static 'KingJames.jpg' %}">
+    <div class="topimgCover"></div>
+    
+    <div class="midbanner">
+    <div width="100%">
+    <p><h3> Coach :</h3> {{team.Coach}} </p>
+    <p><h3> Joueurs :</h3> {{team.ListOfPLayer}} </p>
+    </div>
+    </div>
 
     <h3>Liste des matchs </h3>
+
+    <div class="scrollableitems">
     {% if matchs%}
         <ul>
         {%for match in matchs%}
-        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
-        <p>Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </p>
+        <div class="itembox">
+            <li class="link"><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+            <p>Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </p>
+        </div>
+        <div class="separator">
+        </div>
         {%endfor%}
         </ul>
     {%else%}
     <p>Ne participe à aucun match</p>
     {%endif%}
+    </div>
 
 {% endblock content %}
