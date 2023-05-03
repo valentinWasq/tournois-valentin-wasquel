@@ -43,6 +43,11 @@ class Tournament(models.Model):
     def __str__(self):
         return self.Name
     
+    """
+        Generate the next round of the knockout phase of a tournament given its rank
+        For instance in a tournament with 16 teams out of the pool generateNextRound(2)
+        will create matches for the quarterfinale (pool=0; 8th fo finale=1; quarterfinale=2; halffinale=3; finale=4)
+    """
     def generateNextRound(self, round):
         matchList = []
 
@@ -63,11 +68,8 @@ class Tournament(models.Model):
                     pool2.createAllMatch()
 
                 # First team of the ith pool
-                # print(list(pool1.getTeamsAndScores().items())[0][0].__class__)
                 team1 = list(pool1.getTeamsAndScores().items())[0][0]
                 # Second team of he i+1th pool
-                # print(list(pool2.getTeamsAndScores().items()))
-                # print(list(pool2.getTeamsAndScores().items())[1][0])
                 team2 = list(pool2.getTeamsAndScores().items())[1][0]
                 # First team of he i+1th pool
                 team3 = list(pool2.getTeamsAndScores().items())[0][0]
@@ -76,44 +78,47 @@ class Tournament(models.Model):
                 
                 match1 = Match(Date=None, Location=self.Location, Team1=team1, Team2=team2, isPool=False, Tournament=self, Round=round)
                 match1.save()
-                # matchList.append(match1)
 
                 match2 = Match(Date=None, Location=self.Location, Team1=team3, Team2=team4, isPool=False, Tournament=self, Round=round)
                 match2.save()
-                # matchList.append(match1)
         
         # Generate next round after a knockout round
         elif round > 1 and round <= math.log2(2*self.NBPool):
-            print("Generate round %d" %round)
             lastRoundMatches = Match.objects.filter(Tournament=self).filter(isPool=False).filter(Round=round-1)
             for i in range(len(lastRoundMatches))[::2]:
 
                 # If the two previous matches were played
                 if lastRoundMatches[i].getWinner() != None and lastRoundMatches[i+1].getWinner() != None:
-                    print("Was played and not draw")
                     winner1 = lastRoundMatches[i].getWinner()
                     winner2 = lastRoundMatches[i+1].getWinner()
                     match = Match(Date=None, Location=self.Location, Team1=winner1, Team2=winner2, isPool=False, Tournament=self, Round=round)
                     match.save()
 
-    # Generate random results for the knockout phase matches (designed to be used only in developpment)
+    
+
+    """
+        Generate random results for the knockout phase matches (designed to be used only in developpment)
+    """
     def randomScores(self):
         for match in self.match_set.all():
-            match.Score1 = randint(0,6)
-            match.Score2 = randint(0,6)
+            if match.Score1 == None:
+                match.Score1 = randint(0,6)
+            if match.Score2 == None:
+                match.Score2 = randint(0,6)
             match.save()
 
                     
-                    
 
-
-
-
+    """
+        Delete all the matches from the knockout phase of this tournament
+    """
     def cleanKnockoutMatches(self):
         for match in Match.objects.filter(Tournament=self).filter(isPool=False):
             match.delete()
 
-    # Return only the match in the knockout phase
+    """
+        Return only the matches in the knockout phase
+    """
     def filterKnockoutMatches(self):
         return Match.objects.filter(Tournament=self).filter(isPool=False)
 
