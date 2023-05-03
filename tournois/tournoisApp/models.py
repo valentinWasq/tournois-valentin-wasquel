@@ -19,9 +19,11 @@ class Team(models.Model):
     def getScore(self):
         score = 0
         for match in self.Matchs_team1.all():
-            score += match.Score1
+            if match.Score1 != None:
+                score += match.Score1
         for match in self.Matchs_team2.all():
-            score += match.Score1
+            if match.Score2 != None:
+                score += match.Score2
         return score
         
 class Tournament(models.Model):
@@ -73,7 +75,9 @@ class Tournament(models.Model):
             match2.save()
             matchList.append(match1)
 
-        # return matchList
+    def cleanKnockoutMatches(self):
+        for match in Match.objects.filter(Tournament=self).filter(isPool=False):
+            match.delete()
 
     # Return only the match in the knockout phase
     def filterKnockoutMatches(self):
@@ -93,15 +97,20 @@ class Pool(models.Model):
         Result = {}
         tournament = self.Tournois #store the tournament here as it will be called repepetatively
         for match in self.match_set.all():
-            if match.Score1 > match.Score2:
-                Score1 = tournament.NBPointOnWin
-                Score2 = tournament.NBPointOnLose
-            elif match.Score1 < match.Score2:
-                Score2 = tournament.NBPointOnWin
-                Score1 = tournament.NBPointOnLose
+            if match.Score1!=None and match.Score2!=None:
+                if match.Score1 > match.Score2:
+                    Score1 = tournament.NBPointOnWin
+                    Score2 = tournament.NBPointOnLose
+                elif match.Score1 < match.Score2:
+                    Score2 = tournament.NBPointOnWin
+                    Score1 = tournament.NBPointOnLose
+                else:
+                    Score2 = tournament.NBPointOnTie
+                    Score1 = tournament.NBPointOnTie
+            
             else:
-                Score2 = tournament.NBPointOnTie
-                Score1 = tournament.NBPointOnTie
+                Score1 = 0
+                Score2 = 0
             if match.Team1 in Result:
                 Result[match.Team1] += Score1
             else:
@@ -112,6 +121,11 @@ class Pool(models.Model):
                 Result[match.Team2] = Score2
         orderedResult = {k: v for k, v in sorted(Result.items(), key=lambda item: -item[1])}
         return orderedResult
+    
+    # Deletes all the matches of this pool in the database
+    def cleanMatches(self):
+        for match in self.match_set.all():
+            match.delete()
     
     def createAllMatch(self):
         tournament = self.Tournois
@@ -134,8 +148,8 @@ class Match(models.Model):
     Location = models.CharField(max_length=50)
     Team1 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team1")
     Team2 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team2")
-    Score1 = models.IntegerField(default=0)
-    Score2 = models.IntegerField(default=0)
+    Score1 = models.IntegerField(null=True, blank=True)
+    Score2 = models.IntegerField(null=True, blank=True)
     isPool = models.BooleanField(default=True, blank=True)
     Pool = models.ForeignKey(Pool, null=True, on_delete=models.DO_NOTHING)
     Tournament = models.ForeignKey(Tournament, null=True, on_delete=models.DO_NOTHING)
@@ -143,6 +157,7 @@ class Match(models.Model):
 
     def getScoreString(self):
         return str(self.Score1) + ':' + str(self.Score2)
+       
     
     def Teams(self):
         return [self.Team1, self.Team2]
@@ -151,7 +166,10 @@ class Match(models.Model):
         return [self.Score1, self.Score2]
 
     def __str__(self):
-        return f"match {self.Team1.Name} against {self.Team2.Name}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
+        if self.Score1!=None and self.Score2!=None:
+            return f"match {self.Team1.Name} against {self.Team2.Name}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
+        else:
+            return f"match {self.Team1.Name} against {self.Team2.Name}, \nat : {self.Location}, {self.Date}"
 
 class Comment(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
