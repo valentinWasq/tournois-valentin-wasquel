@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -22,8 +22,8 @@ def chart(pk):
     for match in allmatch:
         date=str(match.Date)
         label1.append([match.Team1.Name, match.Team2.Name, date[0:10]])
-        data1.append(match.Score1+match.Score2)
-        data11.append(match.Encaisse1+match.Encaisse2)
+        data1.append(match.Score1)
+        data11.append(match.Score2)
 
 
     label2=[]
@@ -43,11 +43,11 @@ def chart(pk):
         scoreEncaisse=0
         for match in allmatch:
             if match.Team1==team:
-                scoreTeam=scoreTeam+match.Score1
-                scoreEncaisse=scoreEncaisse+match.Encaisse1
+                scoreTeam=+match.Score1
+                scoreEncaisse=+match.Score2
             if match.Team2==team:
                 scoreTeam=+match.Score2
-                scoreEncaisse=scoreEncaisse+match.Encaisse2
+                scoreEncaisse=+match.Score1
         label2.append(team.Name)
         data2.append(scoreTeam)
         data3.append({"x":scoreEncaisse,"y":scoreTeam,"r":teamsAndScores[team]})
@@ -89,6 +89,7 @@ def home(request):
                     matchs = matchs.union(
                         Match.objects.filter(Team1__Name__icontains=queries[0],Team2__Name__icontains=queries[1])).union(
                             Match.objects.filter(Team2__Name__icontains=queries[0],Team1__Name__icontains=queries[1]))
+            matchs=matchs.order_by("Date")
             teams = Team.objects.filter(Name__icontains=query)
             newform = SearchForm()
             context = {"matchs" : matchs, "teams":teams, "form":newform}
@@ -129,6 +130,17 @@ def generateMatchs(request, pk):
         pool.save()
     return HttpResponseRedirect(reverse('tournament:poolDetail',  args=[pool.id]))
 
+"""
+    This view displays the tree of the knockout phase of the tournament
+    The view is integrated to the TournamentDetail template
+"""
+def generateMatchTree(request, pk):
+    tournament = Tournament.objects.get(id=pk)  
+    tournament.generateNextRound(2) 
+    tournament.save()
+    return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
+
+
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
     match = Match.objects.get(id=pk)
@@ -140,6 +152,7 @@ def teamDetail(request, pk):
     template_name = 'tournois/TeamDetail.html'
     team = Team.objects.get(id=pk)
     matchs = Match.objects.filter(Team1__id__contains=pk).union(Match.objects.filter(Team2__id__contains=pk))
+    matchs = matchs.order_by("Date")
     first_match = matchs[0] #pour le menu, poule et tournoi de son premier match (le dernier n'aura pas forcément de poules)
     context = {'team': team, "matchs":matchs, "first":first_match}
     return render(request, template_name, context)
