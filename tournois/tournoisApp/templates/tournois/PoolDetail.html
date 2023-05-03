@@ -51,7 +51,11 @@
     {% if pool.match_set.all %}
 
     <ul>
-        {% for match in pool.match_set.all %}        
+
+        {% for match in pool.match_set.all %}
+
+
+
         <div style="border: 2px solid rgb(10, 77, 104); border-radius: 100px ; text-align: center; width: 500px; padding: 5px 0">
             <li style="font-family: Arial, sans-serif; font-size:20px; list-style-type: none;"><a style=" text-decoration: none;
                 color:rgb(10, 77, 104);" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
@@ -60,6 +64,9 @@
         </div>
         <div style="position: relative; left: 0; top: 0px; width: 100%; height: 20px; background-color:transparent;z-index:-1;">
         </div>
+
+        {% if user.is_superuser %} <a href="{% url 'tournament:editMatch' match.id %}">edit</a>{% endif %}
+
         {% endfor %}
     </ul>
     {% else %}
@@ -94,6 +101,10 @@
         text-transform: uppercase;
         color:rgb(10, 77, 104);
         "> top 5 </h3>
+
+    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' 0 %}">create Match</a></p>{% endif %}
+
+
     {% if pool.match_set.all %}
 
         <ul>
