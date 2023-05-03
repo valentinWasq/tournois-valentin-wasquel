@@ -39,7 +39,7 @@
                 
                     {% for match in pool.match_set.all %}
                     <div class="itembox">
-                        <li class="link"><a class="linka" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+                        <li><a class="linka" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
                         <p> Score : {{match.getScoreString}} / Location : {{match.Location}} / Date : {{match.Date}} </p>
                         {% if user.is_superuser %} <a class="linka" href="{% url 'tournament:editMatch' match.id %}">edit</a>{% endif %}
                     </div>
@@ -50,7 +50,7 @@
                     {% endfor %}
                     {% if user.is_superuser %} 
                     <div class="itembox" style="width: max-content">
-                    <li class="link"><a class="linka" href="{% url 'tournament:editMatch' 0 %}">create Match</a></li>
+                    <li><a class="linka" href="{% url 'tournament:editMatch' 0 %}">create Match</a></li>
                     </div>
                     <div class="separator">
                     </div>
@@ -87,7 +87,7 @@
             "> Points  &nbsp &nbsp   Equipes </h3>
                 <ul>
                     {% for team, score in pool.getTeamsAndScores.items %}
-                    <li class="li"><FONT size="5pt">{{score}}</FONT> &nbsp &nbsp &nbsp <a class="linka" href=" {% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+                    <li><FONT size="5pt">{{score}}</FONT> &nbsp &nbsp &nbsp <a class="linka" href=" {% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
                     <div class="separator">
                     </div>
                     {% endfor %}
