@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}Résultats de recherche{% endblock title %}
 {% block content %}
     <h2>Résultats de recherche :</h2>
     <p><a href="{% url 'tournament:home' %}">Retour à l'accueil</a></p>
@@ -22,7 +22,7 @@
         </ul>
         {%endif%}
     {%else%}
-    <p></p>Pas de résultats, vérifier le format de la date (YYYY-MM-DD) ou l'orthographe. Entrer le nom d'une ou deux équipes, un score ou une date.</p>
+    <p></p>Pas de résultats, vérifier le format de la date (YYYY-MM-DD), du score (x-x) ou l'orthographe. Pour chercher une oppposition, écrire vs entre les 2 équipes.</p>
     {%endif%}
     <p> Faire une nouvelle recherche : </p>
     <form method="post" action="{% url 'tournament:home'%}">

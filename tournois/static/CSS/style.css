@@ -2,9 +2,7 @@ h1 {
     color: rgb(115, 234, 210);
      font-family: Arial, sans-serif; font-size:100px; 
      text-transform: capitalize; 
-     position: absolute;
-     left: 100px;
-     top: 200px;
+     position: relative;
      font-weight: 1;
 }
 
@@ -23,23 +21,18 @@ h3{
     color:rgb(10, 77, 104);
 }
 p{
-    font-family: Arial, sans-serif; font-size:10px;
+    font-family: Arial, sans-serif; font-size:15px;
 }
 .matchtxt{
-    position: absolute; 
+    position: relative; 
     left: 150px; 
     top: 0px;
 }
 
-
-.topbanner{
-    position: absolute; 
-    left: 0; 
-    top: 0px; 
-    width: 100%; 
-    height: 400px; 
-    background-color:rgb(10, 77, 104);
-    z-index:-1;
+.infos{
+    position : absolute;
+    left: 30%;
+    
 }
 
 .listtour:hover{
@@ -49,33 +42,41 @@ p{
 .topimgCover{
     position: absolute;
     right: 13%;
+}
+.comments{
+    position:relative;
+    left:100px;
+}
+
+.topbanner{
+    position: relative; 
+    background-color:rgb(10, 77, 104,1);
+}
+
+.topimgElem{
+    position: relative;
+    left: 80%;
     top: 0px;
-    width:300px;
-    height: 400px;
+    transform: translate(-20%,0%);
     background-color:rgba(10, 77, 104,0.9);
-    z-index:1;
 }
 
 .topimg{
-    position: absolute;
-    top:0;
-    right: 13%;
+    position:relative;
 }
 
 .midbanner{
-    position: absolute;
-    left: 0;
-    top: 400px;
+    position: relative;
+    left: 0px;
+    top: 0px;
     width: 100%;
-    height: 550px;
     background:linear-gradient(rgb(187, 233, 240) 70%, beige);
     z-index:-1;
 }
 
 .scrollableitems{
-    position: absolute;
-    left: 250px; top: 420px;
-    width:100%;height:70%;
+    position: relative;
+    width:80%;height:400px;
     overflow:scroll;overflow-y:scroll;overflow-x:hidden;
 }
 
@@ -83,8 +84,7 @@ p{
     border: 2px solid rgb(10, 77, 104);
     border-radius: 100px ;
     text-align: center;
-    width: 500px;
-    padding: 5px 0
+    width: 20%;
 }
 
 .itemboxb{
