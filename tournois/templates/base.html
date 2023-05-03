@@ -2,22 +2,24 @@
 
 
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
     <meta charset="UTF-8">
     <title>{% block title %}Val's Tournament{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     {% block head %}{% endblock head %}
 </head>
 
 <body>
     {% block content %}{% endblock %}
-    {% if user.is_authenticated %}
-        <p>you are connected as {{user.username}}; <a href="{% url 'logout' %}">logout</a></p>
-    {% else %}
-        <p><a href="{% url 'login' %}">log in</a></p>
-    {% endif %}
     <footer>
+        {% if user.is_authenticated %}
+            <p>you are connected as {{user.username}}; <a href="{% url 'logout' %}">logout</a></p>
+        {% else %}
+            <p><a href="{% url 'login' %}">log in</a></p>
+        {% endif %}
         <a href="{% url 'tournament:home' %}">Home</a>
         <br>
         <a href="{% url 'tournament:tournamentList' %}">List of all tournament</a>

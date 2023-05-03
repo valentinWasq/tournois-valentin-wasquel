@@ -1,5 +1,5 @@
 nav {
-    background: white;
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .crumbs ol {
@@ -9,6 +9,7 @@ nav {
 
 .crumb {
     display: inline-block;
+    opacity: 100%;
 }
 
 .crumb a::after {
@@ -18,4 +19,8 @@ nav {
     font-size: 80%;
     font-weight: bold;
     padding: 0 3px;
+}
+
+footer {
+    background-color: #006580;
 }
