@@ -1,0 +1,18 @@
+{% load static %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+
+<link rel="stylesheet" href="{% static 'map.css' %}">
+
+<div id="map" start-longitude="{{longitude | default:'1.433333'}}" start-lattitude="{{lattitude | default:'43.6'}}" zoom="{{zoom | default:'12'}}" 
+{% if longitude %}
+start-point="True"
+{% endif %}
+></div>
+<script src="{% static 'map.js' %}"></script>

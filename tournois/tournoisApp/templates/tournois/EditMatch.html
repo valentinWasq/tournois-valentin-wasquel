@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Match{% endblock title %}
+
+{% block content %}
+<form action="{% url 'tournament:editMatch' id %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Save">
+</form>
+
+{% include "tournois/MapModule.html" with longitude=match.Longitude lattitude=match.Lattitude %}
+<script src="{% static 'mapControl.js' %}"></script>
+{% endblock content %}
