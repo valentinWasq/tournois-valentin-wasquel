@@ -12,8 +12,8 @@
     <ol>
         <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
         <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
-        <li class="crumb"><a href="{% url 'tournament:tournamentDetail' recent.Pool.Tournois.id %}">{{recent.Pool.Tournois}}</a></li>
-        <li class="crumb"><a href="{% url 'tournament:poolDetail' recent.Pool.id %}">Poule n°{{recent.Pool.index}}</a></li>
+        <li class="crumb"><a href="{% url 'tournament:tournamentDetail' first.Pool.Tournois.id %}">{{first.Pool.Tournois}}</a></li>
+        <li class="crumb"><a href="{% url 'tournament:poolDetail' first.Pool.id %}">Poule n°{{first.Pool.index}}</a></li>
         <li class="crumb"> {{team.Name}} </li>
     </ol>
 </nav>

@@ -140,8 +140,8 @@ def teamDetail(request, pk):
     template_name = 'tournois/TeamDetail.html'
     team = Team.objects.get(id=pk)
     matchs = Match.objects.filter(Team1__id__contains=pk).union(Match.objects.filter(Team2__id__contains=pk))
-    last_match = matchs[0] #pour le menu, poule et tournoi de son dernier match
-    context = {'team': team, "matchs":matchs, "recent":last_match}
+    first_match = matchs[0] #pour le menu, poule et tournoi de son premier match (le dernier n'aura pas forcément de poules)
+    context = {'team': team, "matchs":matchs, "first":first_match}
     return render(request, template_name, context)
 
 @login_required
