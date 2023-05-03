@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from random import randint
+import math
 
 # Create your models here.
 
@@ -43,37 +45,69 @@ class Tournament(models.Model):
     
     def generateNextRound(self, round):
         matchList = []
-        for i in range(self.NBPool)[::2]:
 
-            # ith pool
-            pool1 = self.pool_set.all()[i]
-            if len(pool1.match_set.all()) < self.NBTeamPerPool * (self.NBTeamPerPool-1)/2:
-                pool1.createAllMatch()
+        if round < 1 or round > math.log2(2*self.NBPool):
+                print("Incorrect number of round")
 
-            # i+1th pool
-            pool2 = self.pool_set.all()[i+1]
-            if len(pool2.match_set.all()) < self.NBTeamPerPool * (self.NBTeamPerPool-1)/2:
-                pool2.createAllMatch()
+        # Generate the first round after the pool phase
+        elif round == 1 :
+            for i in range(self.NBPool)[::2]:
+                # ith pool
+                pool1 = self.pool_set.all()[i]
+                if len(pool1.match_set.all()) < self.NBTeamPerPool * (self.NBTeamPerPool-1)/2:
+                    pool1.createAllMatch()
 
-            # First team of the ith pool
-            # print(list(pool1.getTeamsAndScores().items())[0][0].__class__)
-            team1 = list(pool1.getTeamsAndScores().items())[0][0]
-            # Second team of he i+1th pool
-            # print(list(pool2.getTeamsAndScores().items()))
-            # print(list(pool2.getTeamsAndScores().items())[1][0])
-            team2 = list(pool2.getTeamsAndScores().items())[1][0]
-            # First team of he i+1th pool
-            team3 = list(pool2.getTeamsAndScores().items())[0][0]
-            # Second team of he ith pool
-            team4 = list(pool1.getTeamsAndScores().items())[1][0]
-            
-            match1 = Match(Date=None, Location=self.Location, Team1=team1, Team2=team2, isPool=False, Tournament=self)
-            match1.save()
-            matchList.append(match1)
+                # i+1th pool
+                pool2 = self.pool_set.all()[i+1]
+                if len(pool2.match_set.all()) < self.NBTeamPerPool * (self.NBTeamPerPool-1)/2:
+                    pool2.createAllMatch()
 
-            match2 = Match(Date=None, Location=self.Location, Team1=team3, Team2=team4, isPool=False, Tournament=self)
-            match2.save()
-            matchList.append(match1)
+                # First team of the ith pool
+                # print(list(pool1.getTeamsAndScores().items())[0][0].__class__)
+                team1 = list(pool1.getTeamsAndScores().items())[0][0]
+                # Second team of he i+1th pool
+                # print(list(pool2.getTeamsAndScores().items()))
+                # print(list(pool2.getTeamsAndScores().items())[1][0])
+                team2 = list(pool2.getTeamsAndScores().items())[1][0]
+                # First team of he i+1th pool
+                team3 = list(pool2.getTeamsAndScores().items())[0][0]
+                # Second team of he ith pool
+                team4 = list(pool1.getTeamsAndScores().items())[1][0]
+                
+                match1 = Match(Date=None, Location=self.Location, Team1=team1, Team2=team2, isPool=False, Tournament=self, Round=round)
+                match1.save()
+                # matchList.append(match1)
+
+                match2 = Match(Date=None, Location=self.Location, Team1=team3, Team2=team4, isPool=False, Tournament=self, Round=round)
+                match2.save()
+                # matchList.append(match1)
+        
+        # Generate next round after a knockout round
+        elif round > 1 and round <= math.log2(2*self.NBPool):
+            print("Generate round %d" %round)
+            lastRoundMatches = Match.objects.filter(Tournament=self).filter(isPool=False).filter(Round=round-1)
+            for i in range(len(lastRoundMatches))[::2]:
+
+                # If the two previous matches were played
+                if lastRoundMatches[i].getWinner() != None and lastRoundMatches[i+1].getWinner() != None:
+                    print("Was played and not draw")
+                    winner1 = lastRoundMatches[i].getWinner()
+                    winner2 = lastRoundMatches[i+1].getWinner()
+                    match = Match(Date=None, Location=self.Location, Team1=winner1, Team2=winner2, isPool=False, Tournament=self, Round=round)
+                    match.save()
+
+    # Generate random results for the knockout phase matches (designed to be used only in developpment)
+    def randomScores(self):
+        for match in self.match_set.all():
+            match.Score1 = randint(0,6)
+            match.Score2 = randint(0,6)
+            match.save()
+
+                    
+                    
+
+
+
 
     def cleanKnockoutMatches(self):
         for match in Match.objects.filter(Tournament=self).filter(isPool=False):
@@ -141,6 +175,15 @@ class Pool(models.Model):
             match = Match(Date=None, Location=tournament.Location, Team1=team1, Team2=team2, Pool=self)
             match.save()
 
+    # Generate random results for the matches in this pool(designed to be used only in developpment)
+    def randomScores(self):
+        for match in self.match_set.all():
+            if match.Score1 == None:
+                match.Score1 = randint(0,6)
+            if match.Score2 == None:
+                match.Score2 = randint(0,6)
+            match.save()
+
 
 
 class Match(models.Model):
@@ -165,6 +208,20 @@ class Match(models.Model):
     
     def Scores(self):
         return [self.Score1, self.Score2]
+    
+    """
+        Return the winner of a match
+        Should only be used in the knockout phase since it can't deal with draw
+    """
+    def getWinner(self):
+        if self.Score1==None or self.Score2==None:
+            return None
+        elif self.Score1 > self.Score2:
+            return self.Team1
+        elif self.Score2 > self.Score1:
+            return self.Team2
+        else:
+            return self.Team1 if randint(0,1) else self.Team2
 
     def __str__(self):
         if self.Score1!=None and self.Score2!=None:

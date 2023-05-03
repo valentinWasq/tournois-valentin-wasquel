@@ -23,10 +23,10 @@
                 {% endfor %}
             </ul>
 
-        {% else %}
-            <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate all matchs</a>
-        {% endif %}
-        
+            {% else %}
+            {% endif %}
+        <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate all matchs</a>
+
     {% else %}
 
     <p>aucune poule n'est organisée dans ce tournoi</p>

@@ -69,7 +69,7 @@ def generateMatchs(request, pk):
 """
 def generateMatchTree(request, pk):
     tournament = Tournament.objects.get(id=pk)  
-    tournament.generateNextRound(0) 
+    tournament.generateNextRound(2) 
     tournament.save()
     return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
 
