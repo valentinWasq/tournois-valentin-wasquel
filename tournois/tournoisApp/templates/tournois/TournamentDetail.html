@@ -7,7 +7,7 @@
     {% if tournament.pool_set.all %}
     <ul>
         {% for pool in tournament.pool_set.all %}
-        <li><a href= "{% url 'tournament:poolDetail' pool.id %}">{{pool.index}}</a></li>
+        <li><a href= "{% url 'tournament:poolDetail' pool.id %}">Poule {{pool.index}}</a></li>
         <ul>
             {% for team in pool.getTeams %}
             <li><a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>

@@ -4,6 +4,10 @@ from random import randint
 import math
 
 # Create your models here.
+class Point:
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
 
 class Team(models.Model):
     Name = models.CharField(max_length=50)
@@ -194,6 +198,9 @@ class Pool(models.Model):
 class Match(models.Model):
     Date = models.DateTimeField(null=True)
     Location = models.CharField(max_length=50)
+    # GPS location of the match, will be set in a new view
+    Longitude = models.FloatField(null=True)
+    Lattitude = models.FloatField(null=True)
     Team1 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team1")
     Team2 = models.ForeignKey(Team, on_delete=models.DO_NOTHING, related_name="Matchs_team2")
     Score1 = models.IntegerField(null=True, blank=True)

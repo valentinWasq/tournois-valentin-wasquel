@@ -5,9 +5,12 @@
 {% block content %}
     <h1>{{pool.Tournois.Name}} : pool #{{pool.index}}</h1>
     {% if pool.match_set.all %}
+    <h3> Matchs : </h3>
     <ul>
         {% for match in pool.match_set.all %}
-        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+        <p>Score : {{match.getScoreString}} / Location : {{match.Location}} / Date : {{match.Date}} </p>
+        {% if user.is_superuser %} <a href="{% url 'tournament:editMatch' match.id %}">edit</a>{% endif %}
         {% endfor %}
     </ul>
     {% else %}
@@ -21,10 +24,12 @@
         <p>Aucun match dans cette poule</p>
         {% endif %}
     {% endif %}
+    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' 0 %}">create Match</a></p>{% endif %}
     {% if pool.match_set.all %}
+    <h3> Equipes : </h3>
     <ul>
         {% for team, score in pool.getTeamsAndScores.items %}
-        <li><h3>{{score}}</h3>:<a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+        <li><FONT size="5pt">{{score}}</FONT> : <a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
         {% endfor %}
     </ul>
     {% else %}
@@ -34,4 +39,8 @@
         {% endfor %}
     </ul>
     {% endif %}
+    
+    {% include "src/index.html"%}
+
+
 {% endblock content %}
