@@ -8,6 +8,14 @@ h1 {
      font-weight: 1;
 }
 
+.h1notcenter{
+    color: rgb(115, 234, 210);
+     font-family: Arial, sans-serif; font-size:100px; 
+     text-transform: capitalize; 
+     position: absolute;
+     font-weight: 1;
+}
+
 h3{
     font-family: Arial, sans-serif;
     font-size:20px; 
@@ -32,6 +40,10 @@ p{
     height: 400px; 
     background-color:rgb(10, 77, 104);
     z-index:-1;
+}
+
+.listtour:hover{
+    background-color: aliceblue;
 }
 
 .topimgCover{
@@ -75,6 +87,13 @@ p{
     padding: 5px 0
 }
 
+.itemboxb{
+    border-bottom: 5px  solid rgb(10, 77, 104);
+    text-align: center;
+    width: 500px;
+    padding: 5px 0
+}
+
 .link{
     font-family: Arial, sans-serif;
     font-size:20px;
@@ -93,3 +112,37 @@ p{
     background-color:transparent;
     z-index:-1;
 }
+
+.kickfooter{
+    width: 1000px; 
+    height: 1700px;
+    background-color:transparent;
+    z-index:-1;
+}
+
+
+
+#navbar {
+    background-color: #272d4b; /* Black background color */
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* Transition effect when sliding down (and up) */
+  }
+  
+  /* Style the navbar links */
+  #navbar a {
+    font-family: Arial;
+    font-weight: 200;
+    float: left;
+    display: block;
+    color:rgb(115, 234, 210) ;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+  }
+  
+  #navbar a:hover {
+    background-color:rgb(187, 233, 240);
+    color: #272d4b;
+  }

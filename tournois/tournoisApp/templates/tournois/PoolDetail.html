@@ -9,6 +9,27 @@
 {% endblock head%}
 
 {% block content %}
+
+
+<script>
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function() {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navbar").style.top = "0";
+    } else {
+        document.getElementById("navbar").style.top = "-50px";
+    }
+    prevScrollpos = currentScrollPos;
+    }
+</script>
+
+<div style="z-index: 3;" id="navbar">
+    <a href="{% url 'tournament:home' %}">Accueil</a>
+    <a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a>
+    <a href="{% url 'tournament:tournamentDetail' pool.Tournois.id %}">{{pool.Tournois.Name}}</a>
+</div>
+
 <nav class="crumbs">
     <ol>
         <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
@@ -18,7 +39,7 @@
     </ol>
 </nav>
     
-    <div style="width: 1000px; height: 2000px; background-color:transparent;z-index:-1;">
+    <div class="kickfooter">
 
     <h1 >{{pool.Tournois.Name}} : pool #{{pool.index}}</h1>
     <div class="topbanner"></div>
