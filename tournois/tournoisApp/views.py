@@ -89,6 +89,7 @@ def home(request):
                     matchs = matchs.union(
                         Match.objects.filter(Team1__Name__icontains=queries[0],Team2__Name__icontains=queries[1])).union(
                             Match.objects.filter(Team2__Name__icontains=queries[0],Team1__Name__icontains=queries[1]))
+            matchs=matchs.order_by("Date")
             teams = Team.objects.filter(Name__icontains=query)
             newform = SearchForm()
             context = {"matchs" : matchs, "teams":teams, "form":newform}
@@ -140,6 +141,7 @@ def teamDetail(request, pk):
     template_name = 'tournois/TeamDetail.html'
     team = Team.objects.get(id=pk)
     matchs = Match.objects.filter(Team1__id__contains=pk).union(Match.objects.filter(Team2__id__contains=pk))
+    matchs = matchs.order_by("Date")
     first_match = matchs[0] #pour le menu, poule et tournoi de son premier match (le dernier n'aura pas forcément de poules)
     context = {'team': team, "matchs":matchs, "first":first_match}
     return render(request, template_name, context)
