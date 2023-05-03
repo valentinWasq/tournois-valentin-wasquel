@@ -2,8 +2,35 @@
 
 {% block title %}Val's Tournament : {{team.Name}}{% endblock title %}
 
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head%}
+
 {% block content %}
+<nav class="crumbs">
+    <ol>
+        <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
+        <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
+        <li class="crumb"><a href="{% url 'tournament:tournamentDetail' first.Pool.Tournois.id %}">{{first.Pool.Tournois}}</a></li>
+        <li class="crumb"><a href="{% url 'tournament:poolDetail' first.Pool.id %}">Poule n°{{first.Pool.index}}</a></li>
+        <li class="crumb"> {{team.Name}} </li>
+    </ol>
+</nav>
     <h1>{{team.Name}}</h1>
     <p><B> Coach :</B> {{team.Coach}} </p>
     <p><B> Joueurs :</B> {{team.ListOfPLayer}} </p>
+
+    <h3>Liste des matchs </h3>
+    {% if matchs%}
+        <ul>
+        {%for match in matchs%}
+        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+        <p>Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </p>
+        {%endfor%}
+        </ul>
+    {%else%}
+    <p>Ne participe à aucun match</p>
+    {%endif%}
+
 {% endblock content %}

@@ -107,7 +107,7 @@ class Match(models.Model):
     Pool = models.ForeignKey(Pool, on_delete=models.DO_NOTHING)
 
     def getScoreString(self):
-        return str(self.Score1) + ':' + str(self.Score2)
+        return str(self.Score1) + '-' + str(self.Score2)
     
     def Teams(self):
         return [self.Team1, self.Team2]

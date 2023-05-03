@@ -2,9 +2,8 @@
 
 {% block content %}
     <h1>Voici la page d'accueil</h1>
-    <p><a href="{% url 'tournament:tournamentList' %}">Aller à la liste des tournois</a></p>
-
-    <p>Chercher une équipe ou un match par score, date ou équipe :</p>
+    <p><a href="{% url 'tournament:tournamentList' %}">Aller à la liste des tournois</a>
+        ou chercher une équipe ou un match par score, date ou équipe :</p>
     <form method="post" action="{% url 'tournament:home'%}">
         {% csrf_token %}
         {{ form }}
