@@ -1,0 +1,95 @@
+h1 {
+    color: rgb(115, 234, 210);
+     font-family: Arial, sans-serif; font-size:100px; 
+     text-transform: capitalize; 
+     position: absolute;
+     left: 100px;
+     top: 200px;
+     font-weight: 1;
+}
+
+h3{
+    font-family: Arial, sans-serif;
+    font-size:20px; 
+    text-transform: uppercase;
+    color:rgb(10, 77, 104);
+}
+p{
+    font-family: Arial, sans-serif; font-size:10px;
+}
+.matchtxt{
+    position: absolute; 
+    left: 150px; 
+    top: 0px;
+}
+
+
+.topbanner{
+    position: absolute; 
+    left: 0; 
+    top: 0px; 
+    width: 100%; 
+    height: 400px; 
+    background-color:rgb(10, 77, 104);
+    z-index:-1;
+}
+
+.topimgCover{
+    position: absolute;
+    right: 13%;
+    top: 0px;
+    width:300px;
+    height: 400px;
+    background-color:rgba(10, 77, 104,0.9);
+    z-index:1;
+}
+
+.topimg{
+    position: absolute;
+    top:0;
+    right: 13%;
+}
+
+.midbanner{
+    position: absolute;
+    left: 0;
+    top: 400px;
+    width: 100%;
+    height: 550px;
+    background:linear-gradient(rgb(187, 233, 240) 70%, beige);
+    z-index:-1;
+}
+
+.scrollableitems{
+    position: absolute;
+    left: 250px; top: 420px;
+    width:100%;height:70%;
+    overflow:scroll;overflow-y:scroll;overflow-x:hidden;
+}
+
+.itembox{
+    border: 2px solid rgb(10, 77, 104);
+    border-radius: 100px ;
+    text-align: center;
+    width: 500px;
+    padding: 5px 0
+}
+
+.link{
+    font-family: Arial, sans-serif;
+    font-size:20px;
+    list-style-type: none;
+}
+.linka{
+    text-decoration: none;
+    color:rgb(10, 77, 104);
+}
+.separator{
+    position: relative;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 20px;
+    background-color:transparent;
+    z-index:-1;
+}

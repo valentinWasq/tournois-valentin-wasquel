@@ -1,3 +1,7 @@
+nav {
+    background: rgba(0, 0, 0, 0.3);
+}
+
 .crumbs ol {
     list-style-type: none;
     padding-left: 0;
@@ -5,6 +9,7 @@
 
 .crumb {
     display: inline-block;
+    opacity: 100%;
 }
 
 .crumb a::after {
@@ -14,4 +19,8 @@
     font-size: 80%;
     font-weight: bold;
     padding: 0 3px;
+}
+
+footer {
+    background-color: #006580;
 }
