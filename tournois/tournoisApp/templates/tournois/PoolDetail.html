@@ -10,17 +10,8 @@
 
 {% block content %}
 
-{% include 'tournois/navigation.html' %}
 
 <div class="topbanner">
-<nav class="crumbs">
-    <ol>
-        <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
-        <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
-        <li class="crumb"><a href="{% url 'tournament:tournamentDetail' pool.Tournois.id %}">{{pool.Tournois.Name}}</a></li>
-        <li class="crumb">Poule n°{{pool.index}}</li>
-    </ol>
-</nav>
 
     <div class="topimgElem">
         <img class="topimg" width="300" height="400" src="{% static 'KingJames.jpg' %}">
