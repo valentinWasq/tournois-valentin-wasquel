@@ -5,7 +5,8 @@ h1 {
     text-transform: capitalize;
     position: relative;
     font-weight: 1;
-    margin: auto;
+    margin: 0;
+    width: 95%;
 }
 
 .h1notcenter {
@@ -98,7 +99,9 @@ body {
 }
 
 .scrollableitems {
+    margin:0px; 
     position: relative;
+    width: 88%;
     height: 400px;
     overflow: scroll;
     overflow-y: scroll;
@@ -107,9 +110,9 @@ body {
 
 .itembox {
     border: 2px solid rgb(10, 77, 104);
-    border-radius: 100px;
+    border-radius:100px;
     text-align: center;
-    width: 80%;
+    width: 85%;
 }
 
 .itemboxb {
@@ -129,6 +132,7 @@ li {
 .linka {
     text-decoration: none;
     color: rgb(10, 77, 104);
+
 }
 
 .separator {
@@ -167,7 +171,7 @@ li {
     display: inline-block;
     position: relative;
     height: 100%;
-    width: 49%
+    width: 43%
 }
 
 
@@ -194,4 +198,14 @@ li {
   #navbar a:hover {
     background-color:rgb(187, 233, 240);
     color: #272d4b;
+  }
+
+  .footer{
+    margin:0;
+    width:70%;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: rgb(151, 178, 184);
+    position: relative;
+    left: 2%;
   }

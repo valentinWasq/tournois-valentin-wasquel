@@ -2,42 +2,46 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div style="position: relative;">
-  <div style="text-align: center; background-color: rgb(235,243,224);"> 
-    <h3 style="font-size: 40px;">POOL STATISTICS</h3>
-
-  </div>
   <div style="background-color: darkgray; height: 10px;"> 
   </div>
 
 
-  <div style="background-color:rgb(233, 246, 249) ; "> 
-    <div class="chart-container">
-      <canvas id="BarGoalMatch"
-       labels="{{label1|safe}}" data1="{{data1|safe}}" data2="{{data11|safe}}"></canvas>
-    </div>
-  
+  <div style="background-color:rgb(233, 246, 249) ; text-align: center; "> 
+  <div class="separator" style="height: 100px;"></div>
 
-    <div class="chart-container">
-      <canvas id="GoalsTeam2" style="float:right"
-          labels="{{label2|safe}}" data="{{data3|safe}}"></canvas>
-    </div>
+      <div class="chart-container">
+        <canvas id="BarGoalMatch"
+         labels="{{label1|safe}}" data1="{{data1|safe}}" data2="{{data11|safe}}"></canvas>
+      </div>
+      <div class="box" style="width:5%">
+      </div>
+      <div class="chart-container">
+        <canvas id="GoalsTeam2" style="float:right"
+            labels="{{label2|safe}}" data="{{data3|safe}}"></canvas>
+      </div>
+
+
+
+    <div class="separator" style="height: 100px;"></div>
   </div>
 
 
-  <div style="background-color:rgb(242, 243, 224) ; ">
+  <div style="background-color:rgb(242, 243, 224) ;text-align: center;">
+    <div class="separator" style="height: 50px;"></div>
 
     <div class="chart-container" style="width:35%">
       <canvas id="GoalsTeam"
           labels="{{label2|safe}}" data="{{data2|safe}}"></canvas>
     </div>
-
-    <h3 style="top:40%; color: darkgray;  font-size: 30px; display:inline"> GOALS VS POINTS</h3>
-
-
-    <div class="chart-container" style="width:35%; float:right">
+    <div class="box" style="width:20%; vertical-align: top; margin-top: 15%;">
+      <h3 style="top:40%; color: darkgray;  font-size: 30px;"> GOALS VS POINTS</h3>
+    </div>
+    <div class="chart-container" style="width:35%;">
       <canvas id="PointsTeam"
           labels="{{label4|safe}}" data="{{data4|safe}}"></canvas>
     </div>
+    <div class="separator" style="height: 50px;"></div>
+
   </div>
   <script src="{% static 'graph.js' %}"></script>
 

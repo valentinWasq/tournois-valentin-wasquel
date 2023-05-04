@@ -15,17 +15,16 @@
 <body>
     {% include 'tournois/navigation.html' %}
     {% block content %}{% endblock %}
-    <footer style="margin-left: -8px; margin-right: 0%; width: 101.5%;">
-        {% if user.is_authenticated %}
-            <p>you are connected as {{user.username}}; <a href="{% url 'logout' %}">logout</a></p>
-        {% else %}
-            <p><a href="{% url 'login' %}">log in</a></p>
-        {% endif %}
-        <a href="{% url 'tournament:home' %}">Home</a>
-        <br>
-        <a href="{% url 'tournament:tournamentList' %}">List of all tournament</a>
-        <br>
-        <em>&copy; ISAE-SUPAERO</em>
+    <footer>
+        <div style="position:relative; height:10px; width:100%; background-color: transparent;"></div>
+        <p class="footer" style="font-size: 18px; font-weight: 700;  left: 1%; margin: 0;">CONTACT INFO:</p>
+        <div style="position:relative; height:7px; width:100%; background-color: transparent;"></div>
+        <p class="footer" style="font-style: italic;">LES ROIS DES TOURNOIS</p>
+        <p class="footer">4 Av Edouard Belin</p>
+        <p class="footer">+33 624 28 65 82</p>
+        <em class="footer">&copy; ISAE-SUPAERO</em>
+        <div style="position:relative; height:20px; width:100%; background-color: transparent;"></div>
+
     </footer>
 </body>
 </html>
