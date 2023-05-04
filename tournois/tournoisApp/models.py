@@ -247,4 +247,4 @@ class Comment(models.Model):
     Content = models.CharField(max_length=500)
 
     def __str__(self):
-        return f"{self.User.username} (on {self.Date}): {self.Content}"
+        return f"{self.User.username} (on {self.Date.date()}): {self.Content}"
