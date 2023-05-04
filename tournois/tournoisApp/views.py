@@ -108,13 +108,13 @@ def tournamentList(request):
 
 def tournamentDetail(request, pk):
     template_name = 'tournois/TournamentDetail.html'
-    tournament = Tournament.objects.get(id=pk)
+    tournament = get_object_or_404(Tournament,id=pk)
     context = {'tournament': tournament}
     return render(request, template_name, context)
 
 def poolDetail(request, pk):
     template_name = 'tournois/PoolDetail.html'
-    pool = Pool.objects.get(id=pk)
+    pool = get_object_or_404(Pool,id=pk)
     canGenerate = (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool)
     contextchart=chart(pk)
     context = {'pool': pool, 'canGenerate':canGenerate, 'label1':contextchart[0], 'data1':contextchart[1], 'data11':contextchart[2], 'label2':contextchart[3], 'data2':contextchart[4],'data3':contextchart[5], 'label4':contextchart[6],'data4':contextchart[7]}
@@ -124,7 +124,7 @@ def poolDetail(request, pk):
     return render(request, template_name, context)
 
 def generateMatchs(request, pk):
-    pool = Pool.objects.get(id=pk)
+    pool = get_object_or_404(Pool,id=pk)
     if (len(pool.match_set.all()) == 0) and (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool) and (request.user.is_superuser):
         pool.createAllMatch()
         pool.save()
@@ -135,7 +135,7 @@ def generateMatchs(request, pk):
     The view is integrated to the TournamentDetail template
 """
 def generateMatchTree(request, pk):
-    tournament = Tournament.objects.get(id=pk)  
+    tournament = get_object_or_404(Tournament,id=pk)
     tournament.generateNextRound(2) 
     tournament.save()
     return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
@@ -143,14 +143,14 @@ def generateMatchTree(request, pk):
 
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
-    match = Match.objects.get(id=pk)
+    match = get_object_or_404(Match,id=pk)
     commentForm = CommentForm()
     context = {'match': match, 'commentForm' : commentForm}
     return render(request, template_name, context)
 
 def teamDetail(request, pk):
     template_name = 'tournois/TeamDetail.html'
-    team = Team.objects.get(id=pk)
+    team = get_object_or_404(Team,id=pk)
     matchs = Match.objects.filter(Team1__id__contains=pk).union(Match.objects.filter(Team2__id__contains=pk))
     matchs = matchs.order_by("Date")
     first_match = matchs[0] #pour le menu, poule et tournoi de son premier match (le dernier n'aura pas forcément de poules)
