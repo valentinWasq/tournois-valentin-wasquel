@@ -8,7 +8,7 @@
 {% endblock head%}
 
 {% block content %}
-
+<div class="topbanner">
 <nav class="crumbs">
     <ol>
         <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
@@ -18,17 +18,22 @@
         <li class="crumb">{{match.Team1.Name}} VS {{match.Team2.Name}}</li>
     </ol>
 </nav>
-    <div class="topbanner"></div>
-    <h1>{{match.Team1.Name}} VS {{match.Team2.Name}}</h1>
 
-    <div class="midbanner">
-        <h2 class="infos">Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </h2>
-        {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' match.id %}">edit</a></p>{% endif %}
-        <h3 class="matchtxt"> Commentaires </h3>
+    <div class="topimgElem">
+        <img class="topimg" width="300" height="400" src="{% static 'KingJames.jpg' %}">
     </div>
+    
+    <h1>{{match.Team1.Name}} VS {{match.Team2.Name}}</h1> 
+</div>
+    
 
-    <div class="scrollableitems">
+<div class="midbanner">
+    <h2 class="infos">Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </h2>
+    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' match.id %}">edit</a></p>{% endif %}
+    <div class="box" style="width: 60%">
+        <h3 class="matchtxt"> Commentaires </h3>
 
+        <div class="scrollableitems">
         {% if match.comment_set.all %}
         <ul>
             {% for Comment in match.comment_set.all%}
@@ -47,7 +52,7 @@
         {% else %}
             <p>Il n'y a pas de commentaires.</p>
         {% endif %}
-        <p>
+        <p left:"5%">
             {% if user.is_authenticated %}
             <form action="{% url 'tournament:addComment' %}" method='post'>
                 {% csrf_token %}
@@ -56,15 +61,14 @@
                 <input type="submit" value="Post the comment">
             </form>
             {% else %}
-            Vous n'êtes pas connecté.
+            <p left="5%">Vous n'êtes pas connecté. <a href="{% url 'tournament:addComment'%}">Log in</a> to add a comment</p>
             {% endif %}
         </p>
+        </div>
     </div>
 
-    <div style="position:relative; left:800px">
+    <div class = "box" style="30%">
     {% include "tournois/MapModule.html" with longitude=match.Longitude lattitude=match.Lattitude %}
     </div>
-    
-    <div class = style="border: solid 5px rgb(10, 77, 104); border-radius: 20px; position: absolute; left: 1050px; top: 500px; width: 17%; height: 350px; background-color:transparent;z-index:1;">
-    </div>
+</div>
 {% endblock content %}
