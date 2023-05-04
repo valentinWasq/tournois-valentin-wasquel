@@ -230,7 +230,7 @@ class Pool(models.Model):
             for j in range(i+1, len(allTeam)):
                 listOfAllRencontre += [(allTeam[i], allTeam[j])]
         for team1, team2 in listOfAllRencontre: # create all the matches
-            match = Match(Date=None, Location=tournament.Location, Team1=team1, Team2=team2, Pool=self)
+            match = Match(Date=None, Location=tournament.Location, Team1=team1, Team2=team2, Pool=self, Tournament=self.Tournois)
             match.save()
 
     # Generate random results for the matches in this pool(designed to be used only in developpment)
@@ -246,7 +246,7 @@ class Pool(models.Model):
 
 class Match(models.Model):
     Date = models.DateTimeField(null=True)
-    Location = models.CharField(max_length=50)
+    Location = models.CharField(max_length=50, null=True)
     # GPS location of the match, will be set in a new view
     Longitude = models.FloatField(null=True)
     Lattitude = models.FloatField(null=True)
