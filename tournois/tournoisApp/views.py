@@ -253,6 +253,7 @@ def editMatch(request, pk):
                 return redirect(reverse("tournament:matchDetail", args=[newMatch.id]))
             else:
                 menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+                template_name = "tournois/EditMatch.html"
                 context = {"form" : form, "id":pk, 'menue': menue}
                 return render(request, template_name, context) # to change to show the issue!!!!
         else:
@@ -266,6 +267,7 @@ def editMatch(request, pk):
                 if (match.Pool): # lors des eliminatoir, certain match n'ont pas de pool
                     menue += [['pool #' + str(match.Pool.index), 'tournament:poolDetail', match.Pool.id]]
                 menue += [[str(match), 'tournament:matchDetail', match.id]]
+                template_name = "tournois/EditMatch.html"
                 context = {"form" : form, "id":pk, "match":match, 'menue': menue}
                 return render(request, template_name, context) # to change to show the issue!!!!
     else:
