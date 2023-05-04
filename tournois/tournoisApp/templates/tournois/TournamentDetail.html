@@ -17,7 +17,7 @@
     <h1 style="left:5%; color: rgb(10, 77, 104);">{{tournament.Name}}</h1>
    
 
-    <div class="scrollableitems" style="left:5%">
+    <div class="scrollableitems" style="left:5%; height: 500px;">
         {% if tournament.pool_set.all %}
     <ul>
         {% for pool in tournament.pool_set.all %}
@@ -36,7 +36,8 @@
     </ul>
     
     {% if rounds %}
-    
+    <h1 style="position: relative; color: rgb(10, 77, 104); text-align: center; font-size: 50px;">Winner Bracket</h1>
+    <div style="position:relative; height:5px; background-color: rgb(10, 77, 104);"></div>
         <div class="tree">
             
             {% for round in tournament.matchesSortedbyRound %}
@@ -48,12 +49,23 @@
                                 <td>
                                     <div class="matchbox">
                                         <div class="team">
-                                            <a style= "color: rgb(187, 233, 240)"; href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}}</a> {{match.Score1}}
+                                            <div class="box" style="text-align: left; width: 80%;">
+                                                <a style= "text-decoration: none; color: rgb(115, 234, 210);" href= "{% url 'tournament:matchDetail' match.id %}"></a>{{match.Team1.Name}}
+                                            </div>
+                                            <div class="box" style="text-align: right; width: 10%;">
+                                                <p style= "text-decoration: none; color: rgb(231, 114, 126);" >{{match.Score1}}</p>
+                                            </div>
                                             <br>
                                         </div>
                                         <div class="team">
-                                            <a style= "color: rgb(187, 233, 240)";color: rgb(115, 234, 210); href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team2.Name}}</a> {{match.Score2}}
-                                            <br>
+                                            <div class="box" style="text-align: left; width: 80%;">
+                                                <a style= "text-decoration: none; color: rgb(115, 234, 210);" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team2.Name}}</a>
+                                            </div>
+                                            <div class="box" style="text-align: right; width: 10%;">
+                                                <p style= "text-decoration: none; color: rgb(231, 114, 126);" >{{match.Score2}}</p>
+                                            </div>
+                                            <br>                                           
+    
                                         </div>
                                     </div>
                                 </td>
@@ -75,6 +87,8 @@
             
         <p>aucune poule n'est organisée dans ce tournoi</p>
     {% endif %}
+    <div style="position:relative; height:50px; background-color: transparent;"></div>
+    </div>
 {% endblock content %}
 
 
