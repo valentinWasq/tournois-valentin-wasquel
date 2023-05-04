@@ -131,7 +131,6 @@ li{
     z-index:-1;
 }
 
-<<<<<<< HEAD
 .kickfooter{
     width: 1000px; 
     height: 1700px;
@@ -165,7 +164,6 @@ li{
     background-color:rgb(187, 233, 240);
     color: #272d4b;
   }
-=======
 .borded-box {
     border: solid 5px rgb(10, 77, 104); 
     border-radius: 20px; 
@@ -185,4 +183,3 @@ li{
     height:100%; 
     width:49%
 }
->>>>>>> dbbc9d968e746662d647b6588c29052e4898c434
