@@ -4,7 +4,6 @@ h1 {
      text-transform: capitalize; 
      position: relative;
      font-weight: 1;
-     float: left;
      margin: auto;
 }
 
@@ -60,12 +59,13 @@ body {
 
 .topbanner{
     position: relative; 
-    background-color:rgb(10, 77, 104,1);
+    width: 100%;
+    background-color: rgb(10, 77, 104,1);
 }
 
 .topimgElem{
     position: relative;
-    left: 10%;
+    right: 10%;
     top: 0px;
     display: inline-block;
 }
