@@ -61,6 +61,7 @@ def chart(pk):
 
 
 def home(request):
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
     if request.method == "POST":
         searchForm = SearchForm(request.POST)
         if searchForm.is_valid():
@@ -89,25 +90,28 @@ def home(request):
                     matchs = matchs.union(
                         Match.objects.filter(Team1__Name__icontains=queries[0],Team2__Name__icontains=queries[1])).union(
                             Match.objects.filter(Team2__Name__icontains=queries[0],Team1__Name__icontains=queries[1]))
+            matchs=matchs.order_by("Date")
             teams = Team.objects.filter(Name__icontains=query)
             newform = SearchForm()
-            context = {"matchs" : matchs, "teams":teams, "form":newform}
+            context = {"matchs" : matchs, "teams":teams, "form":newform, 'menue': menue}
             template_name = "tournois/SearchResults.html"
             return render(request, template_name, context)
     else :
         searchForm = SearchForm()
         template_name = 'tournois/Home.html'
-    return render(request, template_name,{"form":searchForm})
+    return render(request, template_name,{"form":searchForm, "menue": menue})
 
 def tournamentList(request):
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
     template_name = 'tournois/TournamentList.html'
     allTournament = Tournament.objects.all()
-    context = {'allTournament' : allTournament}
+    context = {'allTournament' : allTournament, "menue" : menue}
     return render(request, template_name, context)
 
 def tournamentDetail(request, pk):
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
     template_name = 'tournois/TournamentDetail.html'
-    tournament = Tournament.objects.get(id=pk)
+    tournament = get_object_or_404(Tournament,id=pk)
     rounds = tournament.matchesSortedbyRound()
     
     # Determine the matches based on the previous scores
@@ -115,50 +119,71 @@ def tournamentDetail(request, pk):
         tournament.generateNextRound(i) 
         tournament.save()
 
-    context = {'tournament': tournament, 'rounds': rounds}
+    context = {'tournament': tournament, 'rounds': rounds, 'menue': menue}
     return render(request, template_name, context)
 
 def poolDetail(request, pk):
     template_name = 'tournois/PoolDetail.html'
-    pool = Pool.objects.get(id=pk)
+    pool = get_object_or_404(Pool,id=pk)
     canGenerate = (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool)
     contextchart=chart(pk)
-    context = {'pool': pool, 'canGenerate':canGenerate, 'label1':contextchart[0], 'data1':contextchart[1], 'data11':contextchart[2], 'label2':contextchart[3], 'data2':contextchart[4],'data3':contextchart[5], 'label4':contextchart[6],'data4':contextchart[7]}
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList'], [pool.Tournois.Name, "tournament:tournamentDetail", pool.Tournois.id]]
+    context = {'pool': pool, 'canGenerate':canGenerate, 'label1':contextchart[0], 'data1':contextchart[1], 'data11':contextchart[2], 'label2':contextchart[3], 'data2':contextchart[4],'data3':contextchart[5], 'label4':contextchart[6],'data4':contextchart[7], 'menue':menue}
 
 
 
     return render(request, template_name, context)
 
 def generateMatchs(request, pk):
-    pool = Pool.objects.get(id=pk)
+    pool = get_object_or_404(Pool,id=pk)
     if (len(pool.match_set.all()) == 0) and (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool) and (request.user.is_superuser):
         pool.createAllMatch()
         pool.save()
     return HttpResponseRedirect(reverse('tournament:poolDetail',  args=[pool.id]))
 
-# """
-#     This view displays the tree of the knockout phase of the tournament
-#     The view is integrated to the TournamentDetail template
-# """
-# def generateMatchTree(request, pk):
-#     tournament = Tournament.objects.get(id=pk)  
-#     for i in range (1,tournament.knockoutPhaseDepth() + 1):
-#         tournament.generateNextRound(i) 
-#         tournament.save()
-#     return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
+"""
+    This view displays the tree of the knockout phase of the tournament
+    The view is integrated to the TournamentDetail template
+"""
+def generateMatchTree(request, pk):
+    tournament = get_object_or_404(Tournament,id=pk)  
+    for i in range (1,tournament.knockoutPhaseDepth() + 1):
+        tournament.generateNextRound(i) 
+        tournament.save()
+    return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
 
 
 def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
-    match = Match.objects.get(id=pk)
+    match = get_object_or_404(Match,id=pk)
     commentForm = CommentForm()
-    context = {'match': match, 'commentForm' : commentForm}
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+    if (match.Tournament):
+        menue += [[match.Tournament.Name, 'tournament:tournamentDetail', match.Tournament.id]]
+    elif (match.Pool): # sometimes, match doesn't have a tournament but are in a pool belonging to a tournament
+        if (match.Pool.Tournois):
+            menue += [[match.Pool.Tournois.Name, 'tournament:tournamentDetail', match.Pool.Tournois.id]]
+    if (match.Pool): # lors des eliminatoir, certain match n'ont pas de pool
+        menue += [['Poule ' + str(match.Pool.index), 'tournament:poolDetail', match.Pool.id]]
+    context = {'match': match, 'commentForm' : commentForm, "menue": menue}
     return render(request, template_name, context)
 
 def teamDetail(request, pk):
     template_name = 'tournois/TeamDetail.html'
-    team = Team.objects.get(id=pk)
-    context = {'team': team}
+    team = get_object_or_404(Team,id=pk)
+    matchs = Match.objects.filter(Team1__id__contains=pk).union(Match.objects.filter(Team2__id__contains=pk))
+    matchs = matchs.order_by("Date")
+    first_match = matchs[0] #pour le menu, poule et tournoi de son premier match (le dernier n'aura pas forcément de poules)
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+    if (first_match):#while creating a pool, a team can have no matchif (match.Tournament):
+        if(first_match.Tournament):
+            menue += [[first_match.Tournament.Name, 'tournament:tournamentDetail', first_match.Tournament.id]]
+        elif (first_match.Pool): # sometimes, first_match doesn't have a tournament but are in a pool belonging to a tournament
+            if (first_match.Pool.Tournois):
+                menue += [[first_match.Pool.Tournois.Name, 'tournament:tournamentDetail', first_match.Pool.Tournois.id]]
+        if (first_match.Pool): # lors des eliminatoir, certain first_match n'ont pas de pool
+            menue += [['Poule ' + str(first_match.Pool.index), 'tournament:poolDetail', first_match.Pool.id]]
+    context = {'team': team, "matchs":matchs, "first":first_match, "menue": menue}
     return render(request, template_name, context)
 
 @login_required
@@ -194,7 +219,16 @@ def editComment(request, pk):
     if request.method == 'GET':
         template_name = 'tournois/EditComment.html'
         commentForm = CommentForm()
-        context = {"Comment" : comment, "commentForm": commentForm}
+        menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+        if (comment.Match.Tournament):
+            menue += [[comment.Match.Tournament.Name, 'tournament:tournamentDetail', comment.Match.Tournament.id]]
+        elif (comment.Match.Pool): # sometimes, comment.Match doesn't have a tournament but are in a pool belonging to a tournament
+            if (comment.Match.Pool.Tournois):
+                menue += [[comment.Match.Pool.Tournois.Name, 'tournament:tournamentDetail', comment.Match.Pool.Tournois.id]]
+        if (comment.Match.Pool): # lors des eliminatoir, certain comment.Match n'ont pas de pool
+            menue += [['pool #' + str(comment.Match.Pool.index), 'tournament:poolDetail', comment.Match.Pool.id]]
+        menue += [[str(comment.Match), 'tournament:matchDetail', comment.Match.id]]
+        context = {"Comment" : comment, "commentForm": commentForm, 'menue': menue}
         return render(request, template_name, context)
     else:
         form = CommentForm(request.POST)
@@ -218,7 +252,8 @@ def editMatch(request, pk):
                 newMatch.save()
                 return redirect(reverse("tournament:matchDetail", args=[newMatch.id]))
             else:
-                context = {"form" : form, "id":pk}
+                menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+                context = {"form" : form, "id":pk, 'menue': menue}
                 return render(request, template_name, context) # to change to show the issue!!!!
         else:
             match = Match.objects.get(pk=pk)
@@ -227,7 +262,11 @@ def editMatch(request, pk):
                 form.save()
                 return redirect(reverse("tournament:matchDetail", args=[pk]))
             else:
-                context = {"form" : form, "id":pk, "match":match}
+                menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList'], [match.Tournament.Name, 'tournament:TournamentDetail', match.Tournament.id]]
+                if (match.Pool): # lors des eliminatoir, certain match n'ont pas de pool
+                    menue += [['pool #' + str(match.Pool.index), 'tournament:poolDetail', match.Pool.id]]
+                menue += [[str(match), 'tournament:matchDetail', match.id]]
+                context = {"form" : form, "id":pk, "match":match, 'menue': menue}
                 return render(request, template_name, context) # to change to show the issue!!!!
     else:
         if pk == 0:
@@ -237,5 +276,15 @@ def editMatch(request, pk):
             match = Match.objects.get(pk=pk)
             form = MatchForm(instance=match)
         template_name = "tournois/EditMatch.html"
-        context = {"form" : form, "id":pk, "match":match}
+        menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+        if (match):
+            if (match.Tournament):
+                menue += [[match.Tournament.Name, 'tournament:tournamentDetail', match.Tournament.id]]
+            elif (match.Pool): # sometimes, match doesn't have a tournament but are in a pool belonging to a tournament
+                if (match.Pool.Tournois):
+                    menue += [[match.Pool.Tournois.Name, 'tournament:tournamentDetail', match.Pool.Tournois.id]]
+            if (match.Pool): # lors des eliminatoir, certain match n'ont pas de pool
+                menue += [['pool #' + str(match.Pool.index), 'tournament:poolDetail', match.Pool.id]]
+            menue.append([str(match), 'tournament:matchDetail', match.id])
+        context = {"form" : form, "id":pk, "match":match, 'menue': menue}
         return render(request, template_name, context)

@@ -1,28 +1,41 @@
 {% extends 'base.html' %}
-
+{% block title %}Résultats de recherche{% endblock title %}
 {% block content %}
-    <h2>Résultats de recherche :</h2>
-    <p><a href="{% url 'tournament:home' %}">Retour à l'accueil</a></p>
+    <div class = "topbanner">
+    <h1>Résultats de recherche :</h1>
+    </div>
 
+    <div class = "midbanner">
+        <p><a href="{% url 'tournament:home' %}">Retour à l'accueil</a></p>
     {%if matchs or teams%}
         {%if teams%}
-        <p>Team :
+        <h3>Team : </h3>
           {%for team in teams%}
-            <a href = "{% url 'tournament:teamDetail' team.id %}"> {{team.Name}} </a>
+          <ul>
+          <div class="itembox" style="width: 40%; ">
+            <li class="link"><a class="linka" style="text-transform: uppercase;" href= "{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+            </div>
+            </ul>
             {%endfor%}
-        </p>
         {%endif%}
         {%if matchs%}
-        <p>Matchs :</p>
+        <h3>Matchs :</h3>
+        <div class="scrollableitems">
             <ul>
             {%for match in matchs%}
-                <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
-                <p>Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </p>
+            <div class = "itembox">
+                    <li><a class="linka" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+                    <p> Score : {{match.getScoreString}} / Location : {{match.Location}} / Date : {{match.Date}} </p>
+                    {% if user.is_superuser %} <a class="linka" href="{% url 'tournament:editMatch' match.id %}">edit</a>{% endif %}
+                </div>
+                <div class="separator">
+                </div>
             {%endfor%}
         </ul>
+    </div>
         {%endif%}
     {%else%}
-    <p></p>Pas de résultats, vérifier le format de la date (YYYY-MM-DD) ou l'orthographe. </p>
+    <p></p>Pas de résultats, vérifier le format de la date (YYYY-MM-DD), du score (x-x) ou l'orthographe. Pour chercher une oppposition, écrire vs entre les 2 équipes.</p>
     {%endif%}
     <p> Faire une nouvelle recherche : </p>
     <form method="post" action="{% url 'tournament:home'%}">
@@ -30,4 +43,6 @@
         {{ form }}
         <input type="submit" value="Search">
     </form>
+</div>
+
 {% endblock content %}

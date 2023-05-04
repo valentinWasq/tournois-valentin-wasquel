@@ -1,0 +1,27 @@
+nav {
+    background: rgb(10, 77, 104);
+}
+
+.crumbs ol {
+    list-style-type: none;
+    padding-left: 0;
+    margin: auto;
+}
+
+.crumb {
+    display: inline-block;
+    opacity: 100%;
+}
+
+.crumb a::after {
+    display: inline-block;
+    color: black;
+    content: '>';
+    font-size: 80%;
+    font-weight: bold;
+    padding: 0 3px;
+}
+
+footer {
+    background-color: #006580;
+}

@@ -1,0 +1,29 @@
+
+<script>
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function() {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navbar").style.top = "0";
+    } else {
+        document.getElementById("navbar").style.top = "-50px";
+    }
+    prevScrollpos = currentScrollPos;
+    }
+</script>
+
+<div style="z-index: 3;" id="navbar">
+    {% for data in menue %}
+    {% if data.2 %}
+    <a href="{% url data.1 data.2 %}">{{data.0}}</a>
+    {% else %}
+    <a href="{% url data.1 %}">{{data.0}}</a>
+    {% endif %}
+    {% endfor %}
+    {% if user.is_authenticated %}
+    <a style="position:relative; float:right;   ">{{user.username}}</a>; 
+    <a style="position:relative; float:right;" href="{% url 'logout' %}">logout</a>
+    {% else %}
+    <a style="position:relative; float:right;" href="{% url 'login' %}">log in</a>
+    {% endif %}
+</div>

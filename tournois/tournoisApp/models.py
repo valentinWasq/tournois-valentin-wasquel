@@ -261,8 +261,7 @@ class Match(models.Model):
 
 
     def getScoreString(self):
-        return str(self.Score1) + ':' + str(self.Score2)
-       
+        return str(self.Score1) + '-' + str(self.Score2)
     
     def Teams(self):
         return [self.Team1, self.Team2]
@@ -307,8 +306,8 @@ class Match(models.Model):
 class Comment(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     Match = models.ForeignKey(Match, on_delete=models.CASCADE)
-    Date = models.DateField()
+    Date = models.DateTimeField()
     Content = models.CharField(max_length=500)
 
     def __str__(self):
-        return f"{self.User.username} : {self.Content} (time : {self.Date})"
+        return f"{self.User.username} (on {self.Date.date()}): {self.Content}"

@@ -1,39 +1,60 @@
 {% extends 'base.html' %}
 
-{% block title %}Val's Tournament: Match {{match.Team1.Name}}:{{match.Team2.Name}}{% endblock title %}
+{% block title %} {{match.Team1.Name}} VS {{match.Team2.Name}}{% endblock title %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head%}
 
 {% block content %}
-    <h1>{{match.name}}</h1>
-    <p>{{match}}</p>
-    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' match.id %}">edit</a></p>{% endif %}
-    <p><a href="{% url 'tournament:teamDetail' match.Team1.id %}">{{match.Team1.Name}}</a></p>
-    <p><a href="{% url 'tournament:teamDetail' match.Team2.id %}">{{match.Team2.Name}}</a></p>
-    {% include "tournois/MapModule.html" with longitude=match.Longitude lattitude=match.Lattitude %}
-    {% if match.comment_set.all %}
-    <ul>
-        {% for Comment in match.comment_set.all%}
-        <li>{{Comment}}
-            {% if user == Comment.User %}
-            <a href="{% url 'tournament:removeComment' Comment.id %}">delete</a>  
-            <a href="{% url 'tournament:editComment' Comment.id %}">edit</a>
-            {% endif %}    
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>There is no comment on this match</p>
-    {% endif %}
-    <p>
-        {% if user.is_authenticated %}
-        <form action="{% url 'tournament:addComment' %}" method='post'>
-            {% csrf_token %}
-            {{ commentForm }}
-            <input type="hidden" name="MatchId" id="MatchId" value={{match.id}}>
-            <input type="submit" value="Post the comment">
-        </form>
-        {% else %}
-        vous etes anonymous
-        {% endif %}
-    </p>
+<div class="topbanner">
+    <h1>{{match.Team1.Name}} VS {{match.Team2.Name}}</h1>
+</div>
+    
 
+<div class="midbanner">
+    <h2 class="infos">Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </h2>
+    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' match.id %}">edit</a></p>{% endif %}
+    <div class="box" style="width: 60%">
+        <h3 class="matchtxt"> Commentaires </h3>
+
+        <div class="scrollableitems">
+        {% if match.comment_set.all %}
+        <ul>
+            {% for Comment in match.comment_set.all%}
+            <div class="itembox">
+            <li>{{Comment}}
+                {% if user == Comment.User %}
+                    <a href="{% url 'tournament:removeComment' Comment.id %}">delete</a>  
+                    <a href="{% url 'tournament:editComment' Comment.id %}">edit</a>
+                {% endif %}    
+            </li>
+            </div>
+            <div class="separator">
+            </div>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>Il n'y a pas de commentaires.</p>
+        {% endif %}
+        <p left:"5%">
+            {% if user.is_authenticated %}
+            <form action="{% url 'tournament:addComment' %}" method='post'>
+                {% csrf_token %}
+                {{ commentForm }}
+                <input type="hidden" name="MatchId" id="MatchId" value={{match.id}}>
+                <input type="submit" value="Post the comment">
+            </form>
+            {% else %}
+            <p left="5%">Vous n'êtes pas connecté. <a href="{% url 'tournament:addComment'%}">Log in</a> to add a comment</p>
+            {% endif %}
+        </p>
+        </div>
+    </div>
+
+    <div class = "box" style="30%">
+    {% include "tournois/MapModule.html" with longitude=match.Longitude lattitude=match.Lattitude %}
+    </div>
+</div>
 {% endblock content %}

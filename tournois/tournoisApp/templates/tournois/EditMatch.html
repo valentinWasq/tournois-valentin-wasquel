@@ -4,12 +4,21 @@
 {% block title %}Edit Match{% endblock title %}
 
 {% block content %}
-<form action="{% url 'tournament:editMatch' id %}" method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Save">
-</form>
+<div class="topbanner">
+    <h1>Creation/Modification d'un match</h1>
+</div>
+<div class="midbanner">
+    <div class="box" style="width: 60%">
+        <form action="{% url 'tournament:editMatch' id %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Save">
+        </form>
+    </div>
 
-{% include "tournois/MapModule.html" with longitude=match.Longitude lattitude=match.Lattitude %}
-<script src="{% static 'mapControl.js' %}"></script>
+    <div class="box" style="width: 30%">
+    {% include "tournois/MapModule.html" with longitude=match.Longitude lattitude=match.Lattitude %}
+    </div>
+    <script src="{% static 'mapControl.js' %}"></script>
+</div>
 {% endblock content %}

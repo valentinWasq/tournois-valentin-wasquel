@@ -1,15 +1,33 @@
 {% extends 'base.html' %}
 
 {% block title %}Val's Tournament list{% endblock title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head%}
 {% block content %}
-    <h1>Liste des tournois</h1>
-    {% if allTournament %}
-    <ul>
-        {% for tournament in allTournament %}
-        <li><a href= "{% url 'tournament:tournamentDetail' tournament.id %}">{{tournament.Name}}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>aucun tournoi n'est disponible</p>
-    {% endif %}
+
+    <div class="topbanner">
+        <div style="position:relative; height:200px; width:100%; background-color: transparent;"></div>
+        <h1 style="position: relative; left: 5%;">Liste des tournois</h1>
+    </div>
+
+    <div class="midbanner">
+        
+        <div class="scrollableitems" style="left:12%;">
+        {% if allTournament %}
+            {% for tournament in allTournament %}
+            <div style="position:relative; height:20px; width:100%; background-color: transparent;"></div>
+            <div class="itembox" style="width: 40%; ">
+                <li class="link" ><a class="linka" style="text-transform: uppercase;" href= "{% url 'tournament:tournamentDetail' tournament.id %}">{{tournament.Name}}</a></li>
+            </div>
+            {% endfor %}
+        {% else %}
+        <p>Aucun tournoi n'est disponible</p>
+        {% endif %}
+        </div>
+    </div>
+
+
+
 {% endblock content %}

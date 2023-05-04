@@ -1,80 +1,35 @@
 
 
 {% extends 'base.html' %}
-
-
 {% block title %}Val's Tournament : {{tournament.Name}}{% endblock title %}
+{% block head %}
+{% endblock head%}
 
 {% block content %}
 
-<style>
 
-    table {
-        height:100%;
-    }
+<div class="topbanner">
+    <div style="position:relative; height:200px; background-color: transparent;"></div>
+    <h1 style="position: relative; left: 5%;">Liste des tournois</h1>
+</div>    
+    
+<div class="midbanner">
+    <h1 style="left:5%; color: rgb(10, 77, 104);">{{tournament.Name}}</h1>
    
 
-    .tree{
-        max-width: 1100px;
-        margin: 0 auto;
-        display:block;
-        
-        display: flex;
-        
-        flex-direction: row;
-    }
-
-
-    .round {
-        display:block;
-        float:left;
-        justify-content: center;
-        align-items: center;
-        
-        display:flex;
-
-        width: 25%;
-        
-        flex-direction:row;
-    }
-
-    .matchbox {
-        display:block;
-        display:flex;
-        justify-content: center;
-        flex-direction:column;
-        color: #973b3b;
-        background: white;
-        width: 100%;
-        margin-top: 10%;
-        margin-bottom: 10%;
-
-        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.12);
-    }
-
-    .team {
-        box-sizing: border-box;
-        color: #973b3b;
-        font-family: Arial, sans-serif;
-        background: white;
-        margin-top: 5%;
-        margin-bottom: 5%;
-        width: 100%;
-        height: 6%;
-        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.12);
-
-    }
-</style>
-
-
-<h1>{{tournament.Name}}</h1>
-    {% if tournament.pool_set.all %}
+    <div class="scrollableitems" style="left:5%">
+        {% if tournament.pool_set.all %}
     <ul>
         {% for pool in tournament.pool_set.all %}
-        <li><a href= "{% url 'tournament:poolDetail' pool.id %}">Poule {{pool.index}}</a></li>
+        <div class="itemboxb" >
+            <li class="link" style="font-weight: 750; text-transform: uppercase;"><a class="linka" href= "{% url 'tournament:poolDetail' pool.id %}">Poule {{pool.index}}</a></li>
+        </div>
+        <div class="separator" style="height: 10px;"></div>
+
         <ul>
-            {% for team in pool.getTeams %}
-            <li><a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+            {% for team, score in pool.getTeamsAndScores.items %}
+            <li class="link"><a class="linka" href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+            <div class="separator" style="height: 10px;"></div>
             {% endfor %}
         </ul>
         {% endfor %}

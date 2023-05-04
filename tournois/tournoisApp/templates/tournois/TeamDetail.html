@@ -2,8 +2,38 @@
 
 {% block title %}Val's Tournament : {{team.Name}}{% endblock title %}
 
+{% block head %}
+{% load static %}
+{% endblock head%}
+
 {% block content %}
+<div class="topbanner">
     <h1>{{team.Name}}</h1>
-    <p><B> Coach :</B> {{team.Coach}} </p>
-    <p><B> Joueurs :</B> {{team.ListOfPLayer}} </p>
+    
+<div class="midbanner">
+    <div width="100%">
+        <p><h3> Coach :</h3> {{team.Coach}} </p>
+        <p><h3> Joueurs :</h3> {{team.ListOfPLayer}} </p>
+    </div>
+
+    <h3>Liste des matchs </h3>
+
+    <div class="scrollableitems">
+    {% if matchs%}
+        <ul>
+        {%for match in matchs%}
+        <div class="itembox">
+            <li><a class="linka" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+            <p>Score : <B>{{match.getScoreString}}</B> / Lieu : {{match.Location}} / Date : {{match.Date}} </p>
+        </div>
+        <div class="separator">
+        </div>
+        {%endfor%}
+        </ul>
+    {%else%}
+    <p>Ne participe à aucun match</p>
+    {%endif%}
+    </div>
+
+</div>
 {% endblock content %}

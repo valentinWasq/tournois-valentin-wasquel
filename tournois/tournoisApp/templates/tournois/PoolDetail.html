@@ -1,46 +1,127 @@
+
 {% extends 'base.html' %}
 
-{% block title %}Val's Tournament : pool {{pool.index}}{% endblock title %}
+{%load static%}
+
+{% block title %} {{pool.Tournois.Name}} : poule {{pool.index}}{% endblock title %}
+
+{% block head %}
+{% endblock head%}
 
 {% block content %}
-    <h1>{{pool.Tournois.Name}} : pool #{{pool.index}}</h1>
-    {% if pool.match_set.all %}
-    <h3> Matchs : </h3>
-    <ul>
-        {% for match in pool.match_set.all %}
-        <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
-        <p>Score : {{match.getScoreString}} / Location : {{match.Location}} / Date : {{match.Date}} </p>
-        {% if user.is_superuser %} <a href="{% url 'tournament:editMatch' match.id %}">edit</a>{% endif %}
-        {% endfor %}
-    </ul>
-    {% else %}
-        {% if user.is_superuser %}
-            {% if canGenerate %}
-            <a href="{% url 'tournament:generateMatchs' pool.id %}">generate all matchs</a>
-            {% else %}
-            <p>No match and not the right amount of team in the pool</p>
-            {% endif %}
-        {% else %}
-        <p>Aucun match dans cette poule</p>
-        {% endif %}
-    {% endif %}
-    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' 0 %}">create Match</a></p>{% endif %}
-    {% if pool.match_set.all %}
-    <h3> Equipes : </h3>
-    <ul>
-        {% for team, score in pool.getTeamsAndScores.items %}
-        <li><FONT size="5pt">{{score}}</FONT> : <a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <ul>
-        {% for team in pool.Teams.all %}
-        <li><a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
+
+<div class="topbanner">
+    <div style="position:relative; height:200px; width:100%; background-color: transparent;"></div>
+    <h1 style="left:3%;">{{pool.Tournois.Name}} : Poule {{pool.index}}</h1>
+</div>
+
+    <div class="midbanner" style="text-align: center  ;">
+        <div class="box" style="width: 60%;">
+            <div style="position:relative; height:20px; width:100%; background-color: transparent;"></div>
+            <h1 style="left:5%; color: rgb(10, 77, 104); text-align: left;"> Matchs  </h1>
+            <div style="position:relative; height:15px; width:100%; background-color: transparent;"></div>
+
+            <div class="scrollableitems">
+                {% if pool.match_set.all %}
+                <ul>
+                    {% for match in pool.match_set.all %}
+                    <div class="itembox">
+                        <li><a class="linka" href= "{% url 'tournament:matchDetail' match.id %}">{{match.Team1.Name}} VS {{match.Team2.Name}}</a></li>
+                        <p> Score : {{match.getScoreString}} / Location : {{match.Location}} / Date : {{match.Date}} </p>
+                        {% if user.is_superuser %} <li class="link" style="font-size: 15px;"><a class="linka" href="{% url 'tournament:editMatch' match.id %}">EDIT</a></li>{% endif %}
+                    </div>
+                    <div class="separator">
+                    </div>
+                
+                
+                    {% endfor %}
+                    {% if user.is_superuser %} 
+                    <div class="itembox" style="width:30%; background-color: #272d4b;">
+                    <li><a class="linka" style="font-size: 15px; color:rgb(187, 233, 240) ;" href="{% url 'tournament:editMatch' 0 %}">NOUVEAU MATCH</a></li>
+                    </div>
+                    <div class="separator">
+                    </div>
+                    {% endif %}
+                </ul>
+                {% else %}
+                    {% if user.is_superuser %}
+                        {% if canGenerate %}
+                        <a href="{% url 'tournament:generateMatchs' pool.id %}">generate all matchs</a>
+                        {% else %}
+                        <p>No match and not the right amount of team in the pool</p>
+                        {% endif %}
+                    {% else %}
+                    <p>Aucun match dans cette poule</p>
+                    {% endif %}
+                    {% if user.is_superuser %} <p><a href="{% url 'tournament:editMatch' 0 %}">create Match</a></p>{% endif %}
+                {% endif %}
+                </div>
+            </div>    
+
+            <div class="box" style="width:5%"> </div>
+            <div class="borded-box" style="width:30%">
+        
+        
+            {% if pool.match_set.all %}
+        
+            <h3 style="position: relative; 
+            text-align: center;
+            font-size:40px;
+            "> classement </h3>
+
+
+
+            <div class="box" style="width: 25%;">
+                <h3 style="position: relative; 
+                left: 0px; 
+                top: 2px;
+                text-align: center;
+                "> Points</h3>
+            </div>
+            <div class="box" style="width:5%"> </div>
+            <div class="box" style="width: 25%"> 
+                <h3 style="position: relative; 
+                left: 0px; 
+                top: 2px;
+                text-align: center;
+                "> Equipes </h3>
+            </div>
+
+            <div class="separator"></div>
+
+                    {% for team, score in pool.getTeamsAndScores.items %}
+                    <div class="box" style="width: 25%; text-align: right;">
+                        <li><FONT size="5pt">{{score}}</FONT> 
+                    </div>
+                    <div class="box" style="width:5%"> </div>
+                    <div class="box" style="width:30%"> <li class="link">
+                    <a class="linka" href=" {% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+                    </div>
+                    <div class="separator">
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <h3 style="position: relative; 
+                text-align: center;
+                font-size:50px;
+                "> équipes </h3>
+                <ul>
+                    {% for team in pool.Teams.all %}
+                    <li class="link"a><a href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+                    <div class="separator">
+                    </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div style="position:relative; height:100px; width:100%; background-color: transparent;"></div>
+            <h3 style="font-size: 40px; color: darkgray;">POOL STATISTICS</h3>
+    </div>
+
+
+
     {% include "src/index.html"%}
+    </div>
 
 
 {% endblock content %}
