@@ -5,16 +5,32 @@
 {% block content %}
 
 <div class="topbanner">
-    <h1 style="left:5%;">Comment Editor:</h1>
+    <h1 style="left:5%;">Comment Editor</h1>
 </div>
-<div class="midbanner">
-    <h1 style="left:5%; color: rgb(10, 77, 104); text-align: left;">Old Comment: </p>
-    <p>{{Comment}}</p>
-    <form action="{% url 'tournament:editComment' Comment.id %}" method="post">
-        {% csrf_token %}
-        {{ commentForm }}
-        <input type="submit" value="Post the comment">
+<div class="midbanner" style="text-align: center;position: relative;">
+    <div class="separator" style="height: 50px;"></div>
+
+    <div class="itembox" style=" text-align: center; display: inline-block; width: 30%;">
+        <form style="position: relative; margin: 1%;" action="{% url 'tournament:editComment' Comment.id %}" method="post">
+            {% csrf_token %}
+            {{ commentForm }}
+            <input type="submit" value="Post the comment">       
+    </div>
+    <div class="separator" style="height: 100px;"></div>
     </form>
+        <div class="box" style="width: 49%; text-align: right;">   
+            <h1 style=" color: rgb(10, 77, 104); font-size: 50px;">Old Comment:</h1>
+        </div>
+        <div class="box" style=" position:relative; width: 49%; text-align: left;">
+            <h3>{{Comment}}</h3>
+    </div>
+
+    
+
+
+
+
+    <div class="separator" style="height: 400px;"></div>
 </div>
 
 {% endblock content %}

@@ -1,9 +1,46 @@
 <!DOCTYPE html>
-<body>
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="login">
-    <input type="hidden" name="next" value="{{ next }}">
-</form>
-</body>
+
+{%load static%}
+<link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <meta charset="UTF-8">
+    <title>{% block title %}Val's Tournament{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+<script>
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function() {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navbar").style.top = "0";
+    } else {
+        document.getElementById("navbar").style.top = "-50px";
+    }
+    prevScrollpos = currentScrollPos;
+    }
+</script>
+
+<div style="z-index: 3;" id="navbar">
+    <a href="{% url 'tournament:home' %}">Accueil</a>
+    <a href="{% url 'tournament:tournamentList' %}">Tournament List</a>
+    {% if user.is_authenticated %}
+    <a style="position:relative; float:right;   ">{{user.username}}</a>; 
+    <a style="position:relative; float:right;" href="{% url 'logout' %}">logout</a>
+    {% else %}
+    <a style="position:relative; float:right;" href="{% url 'login' %}">log in</a>
+    {% endif %}
+</div>
+
+<div class="topbanner" style="text-align: center; vertical-align: center; padding: 0%;">
+    <div class="midbanner" style="width: 40%; display: inline-block; margin: 15%; border-radius: 20px; box-shadow: 0 0 100px #272d4b;;">
+        <h1 style="color:darkgray; margin-bottom: 10%; margin-top: 10%;">Log in</h1>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form }}
+            <input style="background-color:#272d4b ; color: rgb(195, 234, 226); margin: 10%; width: 40%;height: 20%; border-radius: 20px;" type="submit" value="LOG IN">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+
+
+</div>
+
