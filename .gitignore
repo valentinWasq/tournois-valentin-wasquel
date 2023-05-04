@@ -81,6 +81,8 @@ target/
 profile_default/
 ipython_config.py
 
+tounois/dump.json
+
 # pyenv
 .python-version
 
