@@ -44,6 +44,7 @@ body {
 .infos {
     position: relative;
     left: 30%;
+    margin:auto;
 
 }
 
@@ -61,14 +62,15 @@ body {
     left: 100px;
 }
 
-.topbanner {
-    position: relative;
-    background-color: rgb(10, 77, 104, 1);
+.topbanner{
+    position: relative; 
+    width: 100%;
+    background-color: rgb(10, 77, 104,1);
 }
 
 .topimgElem {
     position: relative;
-    left: 10%;
+    right: 10%;
     top: 0px;
     display: inline-block;
 }
