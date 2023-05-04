@@ -1,12 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Voici la page d'accueil</h1>
-    <p><a href="{% url 'tournament:tournamentList' %}">Aller à la liste des tournois</a>
-        ou chercher une équipe ou un match par score, date ou équipe :</p>
-    <form method="post" action="{% url 'tournament:home'%}">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Search">
-    </form>
+    <div class="kickfooter" style="height: 870px;">
+    <div class="topbanner" style="text-align: center;"></div>
+    <h1 style="position: relative; left:40%">TOURNAMENTS</h1>
+    <div class="midbanner"></div>
+    
+    <div style="text-align:center; position: absolute;left:0px; top:400px; width: 100%; background-color: gray;">
+        <h3><a class ="linka"  style="font-size: 30px; color:lightgrey" href="{% url 'tournament:tournamentList' %}">Aller à la liste des tournois</a></h3>
+    </div>
+
+    <div class="itembox" style="position: absolute;left: 34%; top:500px;">
+            <h3 style="font-size:15px;" >Chercher une équipe ou un match:</h3>
+           
+            <form method="post" style=""  action="{% url 'tournament:home'%}">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Search">
+            </form>
+    </div>
+
+
+
+    </div>
 {% endblock content %}

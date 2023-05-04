@@ -9,6 +9,27 @@
 {% endblock head%}
 
 {% block content %}
+
+
+<script>
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function() {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navbar").style.top = "0";
+    } else {
+        document.getElementById("navbar").style.top = "-50px";
+    }
+    prevScrollpos = currentScrollPos;
+    }
+</script>
+
+<div style="z-index: 3;" id="navbar">
+    <a href="{% url 'tournament:home' %}">Accueil</a>
+    <a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a>
+    <a href="{% url 'tournament:tournamentDetail' pool.Tournois.id %}">{{pool.Tournois.Name}}</a>
+</div>
+
 <div class="topbanner">
 <nav class="crumbs">
     <ol>
@@ -25,11 +46,8 @@
     </div>
     <h1 >{{pool.Tournois.Name}} : Poule {{pool.index}}</h1>
 </div>
-
-   
-
     <div class="midbanner">
-        <div class="box" style="width: 70%">
+        <div class="box" style="width: 60%">
             <h3 class="matchtxt"> Matchs : </h3>
             <div class="scrollableitems">
 
@@ -70,7 +88,9 @@
                 {% endif %}
                 </div>
             </div>    
-            <div class="borded-box">
+
+            <div class="box" style="width:5%"> </div>
+            <div class="borded-box" style="width:30%">
         
         
             {% if pool.match_set.all %}

@@ -14,7 +14,7 @@
 
 <body>
     {% block content %}{% endblock %}
-    <footer>
+    <footer style="margin-left: -8px; margin-right: 0%; width: 101.5%;">
         {% if user.is_authenticated %}
             <p>you are connected as {{user.username}}; <a href="{% url 'logout' %}">logout</a></p>
         {% else %}
