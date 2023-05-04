@@ -22,8 +22,14 @@ def chart(pk):
     for match in allmatch:
         date=str(match.Date)
         label1.append([match.Team1.Name, match.Team2.Name, date[0:10]])
-        data1.append(match.Score1)
-        data11.append(match.Score2)
+        if (match.Score1):
+            data1.append(match.Score1)
+        else: # un match non jouer à un score Null
+            data1.append(0)
+        if (match.Score2):
+            data11.append(match.Score2)
+        else:
+            data11.append(0)
 
 
     label2=[]
@@ -42,12 +48,13 @@ def chart(pk):
         scoreTeam=0
         scoreEncaisse=0
         for match in allmatch:
-            if match.Team1==team:
-                scoreTeam=+match.Score1
-                scoreEncaisse=+match.Score2
-            if match.Team2==team:
-                scoreTeam=+match.Score2
-                scoreEncaisse=+match.Score1
+            if (match.Score1 or match.Score2): #on verifie que au moins un score est non null 
+                if match.Team1==team:
+                    scoreTeam=+match.Score1
+                    scoreEncaisse=+match.Score2
+                if match.Team2==team:
+                    scoreTeam=+match.Score2
+                    scoreEncaisse=+match.Score1
         label2.append(team.Name)
         data2.append(scoreTeam)
         data3.append({"x":scoreEncaisse,"y":scoreTeam,"r":teamsAndScores[team]})
@@ -114,6 +121,7 @@ def tournamentDetail(request, pk):
     tournament = get_object_or_404(Tournament,id=pk)
     rounds = tournament.matchesSortedbyRound()
     
+
     # Determine the matches based on the previous scores
     for i in range (1,tournament.knockoutPhaseDepth() + 1):
         tournament.generateNextRound(i) 
