@@ -66,6 +66,7 @@ body {
     position: relative; 
     width: 100%;
     background-color: rgb(10, 77, 104,1);
+    padding-top: 6em
 }
 
 .topimgElem {
