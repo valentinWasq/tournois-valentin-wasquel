@@ -32,15 +32,21 @@
         <li class="crumb">{{tournament.Name}}</li>
     </ol>
 </nav>
-    <div class="kickfooter" style="height: 800px;"></div>
-    <div class="topbanner"></div>
-    <h1>{{tournament.Name}}</h1>
-    <div class="midbanner"></div>
-    <div class="scrollableitems">
-    {% if tournament.pool_set.all %}
+
+<div class="topbanner">
+    <div style="position:relative; height:200px; background-color: transparent;"></div>
+    <h1 style="position: relative; left: 5%;">Liste des tournois</h1>
+</div>    
+    
+<div class="midbanner">
+    <h1 style="left:5%; color: rgb(10, 77, 104);">{{tournament.Name}}</h1>
+   
+
+    <div class="scrollableitems" style="left:5%">
+        {% if tournament.pool_set.all %}
     <ul>
         {% for pool in tournament.pool_set.all %}
-        <div class="itemboxb">
+        <div class="itemboxb" >
             <li class="link" style="font-weight: 750; text-transform: uppercase;"><a class="linka" href= "{% url 'tournament:poolDetail' pool.id %}">Poule {{pool.index}}</a></li>
         </div>
         <div class="separator" style="height: 10px;"></div>
@@ -53,20 +59,22 @@
         </ul>
         {% endfor %}
     </ul>
-
-        {% if tournament.filterKnockoutMatches.all %}
-            <ul>
-                {% for match in tournament.filterKnockoutMatches.all %}
-                    <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
-                {% endfor %}
-            </ul>
-
-            {% else %}
-            {% endif %}
-        <a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate next round</a>
+            
+    {% if tournament.filterKnockoutMatches.all %}
+    <ul>
+        {% for match in tournament.filterKnockoutMatches.all %}
+            <li><a href= "{% url 'tournament:matchDetail' match.id %}">{{match}}</a></li>
+        {% endfor %}
+    </ul>
 
     {% else %}
-
-    <p>aucune poule n'est organisée dans ce tournoi</p>
     {% endif %}
+<a href="{% url 'tournament:generateMatchTree' tournament.id  %}">generate next round</a>
+
+{% else %}
+
+<p>aucune poule n'est organisée dans ce tournoi</p>
+{% endif %}
+    </div>
+</div>
 {% endblock content %}

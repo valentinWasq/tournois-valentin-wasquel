@@ -18,7 +18,7 @@
         prevScrollpos = currentScrollPos;
         }
     </script>
-
+    
     <div id="navbar">
         <a href="{% url 'tournament:home' %}">Accueil</a>
         <a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a>
@@ -38,24 +38,28 @@
         </ol>
     </nav>
 
-
-    <div class="kickfooter" style="height: 800px;"></div>
-    <div class="topbanner"></div>
-    <h1>Liste des tournois</h1>
-    <div class="midbanner"></div>
-    <div class="scrollableitems">
-
-    
-    {% if allTournament %}
-    <ul>
-        {% for tournament in allTournament %}
-        <div class="itembox">
-            <li class="link" ><a class="linka" style="text-transform: uppercase;" href= "{% url 'tournament:tournamentDetail' tournament.id %}">{{tournament.Name}}</a></li>
-        </div>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Aucun tournoi n'est disponible</p>
-    {% endif %}
+    <div class="topbanner">
+        <div style="position:relative; height:200px; width:100%; background-color: transparent;"></div>
+        <h1 style="position: relative; left: 5%;">Liste des tournois</h1>
     </div>
+
+    <div class="midbanner">
+        <div class="scrollableitems" style="left:12%">
+                
+        {% if allTournament %}
+        <ul>
+            {% for tournament in allTournament %}
+            <div class="itembox" style="width: 40%; ">
+                <li class="link" ><a class="linka" style="text-transform: uppercase;" href= "{% url 'tournament:tournamentDetail' tournament.id %}">{{tournament.Name}}</a></li>
+            </div>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Aucun tournoi n'est disponible</p>
+        {% endif %}
+        </div>
+    </div>
+
+
+
 {% endblock content %}
