@@ -11,7 +11,11 @@
         {%if teams%}
         <h3>Team : </h3>
           {%for team in teams%}
-            <p><a href = "{% url 'tournament:teamDetail' team.id %}"> {{team.Name}} </a></p>
+          <ul>
+          <div class="itembox" style="width: 40%; ">
+            <li class="link"><a class="linka" style="text-transform: uppercase;" href= "{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+            </div>
+            </ul>
             {%endfor%}
         {%endif%}
         {%if matchs%}

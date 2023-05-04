@@ -156,7 +156,7 @@ def matchDetail(request, pk):
         if (match.Pool.Tournois):
             menue += [[match.Pool.Tournois.Name, 'tournament:tournamentDetail', match.Pool.Tournois.id]]
     if (match.Pool): # lors des eliminatoir, certain match n'ont pas de pool
-        menue += [['pool #' + str(match.Pool.index), 'tournament:poolDetail', match.Pool.id]]
+        menue += [['Poule ' + str(match.Pool.index), 'tournament:poolDetail', match.Pool.id]]
     context = {'match': match, 'commentForm' : commentForm, "menue": menue}
     return render(request, template_name, context)
 
@@ -174,7 +174,7 @@ def teamDetail(request, pk):
             if (first_match.Pool.Tournois):
                 menue += [[first_match.Pool.Tournois.Name, 'tournament:tournamentDetail', first_match.Pool.Tournois.id]]
         if (first_match.Pool): # lors des eliminatoir, certain first_match n'ont pas de pool
-            menue += [['pool #' + str(first_match.Pool.index), 'tournament:poolDetail', first_match.Pool.id]]
+            menue += [['Poule ' + str(first_match.Pool.index), 'tournament:poolDetail', first_match.Pool.id]]
     context = {'team': team, "matchs":matchs, "first":first_match, "menue": menue}
     return render(request, template_name, context)
 
