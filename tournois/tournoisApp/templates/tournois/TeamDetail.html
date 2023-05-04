@@ -7,17 +7,15 @@
 {% endblock head%}
 
 {% block content %}
-<div class="topbanner">
-    <h1>{{team.Name}}</h1>
+<div class="topbanner" >
+    <div style="position:relative; height:200px; width:100%; background-color: transparent;"></div>
+    <h1 style="left:5%;">{{team.Name}}</h1>
+</div>
+
     
-<div class="midbanner">
-    <div width="100%">
-        <p><h3> Coach :</h3> {{team.Coach}} </p>
-        <p><h3> Joueurs :</h3> {{team.ListOfPLayer}} </p>
-    </div>
-
-    <h3>Liste des matchs </h3>
-
+<div class="midbanner" style="text-align: center;">
+    <h1 style="left:5%; color: rgb(10, 77, 104); text-align: left;">Liste des matchs </h3>
+    <div class="box" style="width:60%">
     <div class="scrollableitems">
     {% if matchs%}
         <ul>
@@ -34,6 +32,20 @@
     <p>Ne participe à aucun match</p>
     {%endif%}
     </div>
+    </div>
+    <div class="box" style="width:5%"> </div>
+    <div class="borded-box" style="width:30%; vertical-align: top;">
+        <div width="100%">
+            <div style="height: 10px;"></div>
+            <h3> Coach :</h3>
+            <p style="font-family: Arial, sans-serif;font-size: 15px;"> {{team.Coach}} </p>
+            <div style="height: 10px;"></div>
+            <h3> Joueurs :</h3> 
+            <p style="font-family: Arial, sans-serif;font-size: 15px;">{{team.ListOfPLayer}} </p>
+            <div style="height: 10px;"></div>
+        </div> 
+    </div>
+
 
 </div>
 {% endblock content %}
