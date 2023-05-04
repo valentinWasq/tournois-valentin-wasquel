@@ -8,15 +8,6 @@
 
 {% block content %}
 <div class="topbanner">
-    <nav class="crumbs">
-        <ol>
-            <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
-            <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
-            <li class="crumb"><a href="{% url 'tournament:tournamentDetail' first.Pool.Tournois.id %}">{{first.Pool.Tournois}}</a></li>
-            <li class="crumb"><a href="{% url 'tournament:poolDetail' first.Pool.id %}">Poule n°{{first.Pool.index}}</a></li>
-            <li class="crumb"> {{team.Name}} </li>
-        </ol>
-    </nav>
 
 
     <h1>{{team.Name}}</h1>

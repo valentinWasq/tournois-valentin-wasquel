@@ -1,37 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Val's Tournament : {{tournament.Name}}{% endblock title %}
 {% block head %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
 {% endblock head%}
 
 {% block content %}
 
-<script>
-    var prevScrollpos = window.pageYOffset;
-    window.onscroll = function() {
-    var currentScrollPos = window.pageYOffset;
-    if (prevScrollpos > currentScrollPos) {
-        document.getElementById("navbar").style.top = "0";
-    } else {
-        document.getElementById("navbar").style.top = "-50px";
-    }
-    prevScrollpos = currentScrollPos;
-    }
-</script>
-
-<div id="navbar">
-    <a href="{% url 'tournament:home' %}">Accueil</a>
-    <a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a>
-</div>
-
-<nav class="crumbs">
-    <ol>
-        <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
-        <li class="crumb"><a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a></li>
-        <li class="crumb">{{tournament.Name}}</li>
-    </ol>
-</nav>
 
 <div class="topbanner">
     <div style="position:relative; height:200px; background-color: transparent;"></div>

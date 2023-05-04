@@ -6,37 +6,6 @@
 <link rel="stylesheet" href="{% static 'style.css' %}">
 {% endblock head%}
 {% block content %}
-    <script>
-        var prevScrollpos = window.pageYOffset;
-        window.onscroll = function() {
-        var currentScrollPos = window.pageYOffset;
-        if (prevScrollpos > currentScrollPos) {
-            document.getElementById("navbar").style.top = "0";
-        } else {
-            document.getElementById("navbar").style.top = "-50px";
-        }
-        prevScrollpos = currentScrollPos;
-        }
-    </script>
-    
-    <div id="navbar">
-        <a href="{% url 'tournament:home' %}">Accueil</a>
-        <a href="{% url 'tournament:tournamentList' %}">Liste des tournois</a>
-        <a href="{% url 'tournament:home' %}">Home</a>
-        {% if user.is_authenticated %}
-        <a style="position: relative; right: auto;"href="{% url 'logout' %}">Logut</a>
-        <a style="position: relative; right: auto;" href="">{{user.username}}</a>
-        {% else %}
-        <a style="position: relative; right: auto;"href="{% url 'login' %}">Login</a>
-        {% endif %}
-    </div>
-
-    <nav class="crumbs">
-        <ol>
-            <li class="crumb"><a href="{% url 'tournament:home' %}">Accueil</a></li>
-            <li class="crumb">Liste des tournois</li>
-        </ol>
-    </nav>
 
     <div class="topbanner">
         <div style="position:relative; height:200px; width:100%; background-color: transparent;"></div>
