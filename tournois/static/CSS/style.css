@@ -166,3 +166,29 @@ li {
     height: 100%;
     width: 49%
 }
+
+
+#navbar {
+    background-color: #272d4b; /* Black background color */
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* Transition effect when sliding down (and up) */
+  }
+  
+  /* Style the navbar links */
+  #navbar a {
+    font-family: Arial;
+    font-weight: 200;
+    float: left;
+    display: block;
+    color:rgb(115, 234, 210) ;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+  }
+  
+  #navbar a:hover {
+    background-color:rgb(187, 233, 240);
+    color: #272d4b;
+  }
