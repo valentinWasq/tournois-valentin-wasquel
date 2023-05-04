@@ -61,6 +61,7 @@ def chart(pk):
 
 
 def home(request):
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
     if request.method == "POST":
         searchForm = SearchForm(request.POST)
         if searchForm.is_valid():
@@ -92,24 +93,26 @@ def home(request):
             matchs=matchs.order_by("Date")
             teams = Team.objects.filter(Name__icontains=query)
             newform = SearchForm()
-            context = {"matchs" : matchs, "teams":teams, "form":newform}
+            context = {"matchs" : matchs, "teams":teams, "form":newform, 'menue': menue}
             template_name = "tournois/SearchResults.html"
             return render(request, template_name, context)
     else :
         searchForm = SearchForm()
         template_name = 'tournois/Home.html'
-    return render(request, template_name,{"form":searchForm})
+    return render(request, template_name,{"form":searchForm, "menue": menue})
 
 def tournamentList(request):
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
     template_name = 'tournois/TournamentList.html'
     allTournament = Tournament.objects.all()
-    context = {'allTournament' : allTournament}
+    context = {'allTournament' : allTournament, "menue" : menue}
     return render(request, template_name, context)
 
 def tournamentDetail(request, pk):
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
     template_name = 'tournois/TournamentDetail.html'
     tournament = get_object_or_404(Tournament,id=pk)
-    context = {'tournament': tournament}
+    context = {'tournament': tournament, "menue": menue}
     return render(request, template_name, context)
 
 def poolDetail(request, pk):
@@ -146,7 +149,8 @@ def matchDetail(request, pk):
     template_name = 'tournois/MatchDetail.html'
     match = get_object_or_404(Match,id=pk)
     commentForm = CommentForm()
-    context = {'match': match, 'commentForm' : commentForm}
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList']]
+    context = {'match': match, 'commentForm' : commentForm, "menue": menue}
     return render(request, template_name, context)
 
 def teamDetail(request, pk):

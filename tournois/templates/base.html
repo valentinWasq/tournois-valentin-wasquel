@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    {% include 'tournois/navigation.html' %}
     {% block content %}{% endblock %}
     <footer style="margin-left: -8px; margin-right: 0%; width: 101.5%;">
         {% if user.is_authenticated %}
