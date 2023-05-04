@@ -117,7 +117,8 @@ def poolDetail(request, pk):
     pool = Pool.objects.get(id=pk)
     canGenerate = (len(pool.Teams.all()) == pool.Tournois.NBTeamPerPool)
     contextchart=chart(pk)
-    context = {'pool': pool, 'canGenerate':canGenerate, 'label1':contextchart[0], 'data1':contextchart[1], 'data11':contextchart[2], 'label2':contextchart[3], 'data2':contextchart[4],'data3':contextchart[5], 'label4':contextchart[6],'data4':contextchart[7]}
+    menue = [['Accueil', 'tournament:home'], ['Liste des tournois', 'tournament:tournamentList'], [pool.Tournois.Name, "tournament:tournamentDetail", pool.Tournois.id]]
+    context = {'pool': pool, 'canGenerate':canGenerate, 'label1':contextchart[0], 'data1':contextchart[1], 'data11':contextchart[2], 'label2':contextchart[3], 'data2':contextchart[4],'data3':contextchart[5], 'label4':contextchart[6],'data4':contextchart[7], 'menue':menue}
 
 
 
