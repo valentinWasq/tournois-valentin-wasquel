@@ -18,7 +18,7 @@ def chart(pk):
 
     pool=Pool.objects.get(id=pk)
     allmatch=pool.match_set.all()
-    allteam=Team.objects.all()
+    allteam=pool.getTeamsAndScores().keys()
     for match in allmatch:
         date=str(match.Date)
         label1.append([match.Team1.Name, match.Team2.Name, date[0:10]])
