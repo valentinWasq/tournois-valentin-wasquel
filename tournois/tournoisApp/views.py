@@ -108,7 +108,14 @@ def tournamentList(request):
 def tournamentDetail(request, pk):
     template_name = 'tournois/TournamentDetail.html'
     tournament = Tournament.objects.get(id=pk)
-    context = {'tournament': tournament}
+    rounds = tournament.matchesSortedbyRound()
+    
+    # Determine the matches based on the previous scores
+    for i in range (1,tournament.knockoutPhaseDepth() + 1):
+        tournament.generateNextRound(i) 
+        tournament.save()
+
+    context = {'tournament': tournament, 'rounds': rounds}
     return render(request, template_name, context)
 
 def poolDetail(request, pk):
@@ -129,15 +136,16 @@ def generateMatchs(request, pk):
         pool.save()
     return HttpResponseRedirect(reverse('tournament:poolDetail',  args=[pool.id]))
 
-"""
-    This view displays the tree of the knockout phase of the tournament
-    The view is integrated to the TournamentDetail template
-"""
-def generateMatchTree(request, pk):
-    tournament = Tournament.objects.get(id=pk)  
-    tournament.generateNextRound(2) 
-    tournament.save()
-    return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
+# """
+#     This view displays the tree of the knockout phase of the tournament
+#     The view is integrated to the TournamentDetail template
+# """
+# def generateMatchTree(request, pk):
+#     tournament = Tournament.objects.get(id=pk)  
+#     for i in range (1,tournament.knockoutPhaseDepth() + 1):
+#         tournament.generateNextRound(i) 
+#         tournament.save()
+#     return HttpResponseRedirect(reverse('tournament:tournamentDetail', args=[tournament.id]))
 
 
 def matchDetail(request, pk):

@@ -48,6 +48,21 @@ class Tournament(models.Model):
         return self.Name
     
     """
+        Return the number of knockout rounds based on the number of pools
+        considering 2 qualified teams per pool
+    """
+    def knockoutPhaseDepth(self):
+        return int(math.log2(2*self.NBPool))
+    
+    """
+        Return a boolean indicating if all the matches for 
+        the specifies round are generated
+    """
+    def isFullRound(self, round):
+        roundMatches = Match.objects.filter(Tournament=self).filter(isPool=False).filter(Round=round)
+        return len(roundMatches) == 2**(self.knockoutPhaseDepth()-round)
+    
+    """
         Generate the next round of the knockout phase of a tournament given its rank
         For instance in a tournament with 16 teams out of the pool generateNextRound(2)
         will create matches for the quarterfinale (pool=0; 8th fo finale=1; quarterfinale=2; halffinale=3; finale=4)
@@ -55,8 +70,13 @@ class Tournament(models.Model):
     def generateNextRound(self, round):
         matchList = []
 
-        if round < 1 or round > math.log2(2*self.NBPool):
-                print("Incorrect number of round")
+        # Doesn't generate if there are already the right number of match
+        if self.isFullRound(round):
+            return
+
+        elif round < 1 or round > self.knockoutPhaseDepth():
+            print("Incorrect number of round")
+            return
 
         # Generate the first round after the pool phase
         elif round == 1 :
@@ -87,14 +107,29 @@ class Tournament(models.Model):
                 match2.save()
         
         # Generate next round after a knockout round
-        elif round > 1 and round <= math.log2(2*self.NBPool):
+        elif round > 1 and round <= self.knockoutPhaseDepth():
+            
+
+            # To avoid trying to determine the winner of non existing match
+            if not self.isFullRound(round - 1):
+                return
+
             lastRoundMatches = Match.objects.filter(Tournament=self).filter(isPool=False).filter(Round=round-1)
             for i in range(len(lastRoundMatches))[::2]:
 
-                # If the two previous matches were played
-                if lastRoundMatches[i].getWinner() != None and lastRoundMatches[i+1].getWinner() != None:
-                    winner1 = lastRoundMatches[i].getWinner()
-                    winner2 = lastRoundMatches[i+1].getWinner()
+                # print("Round = %d, i = %d" %(round,i))
+                # Check if the two previous matches were played
+                if lastRoundMatches[i].getWinner() == None or lastRoundMatches[i+1].getWinner() == None:
+                    continue
+                
+                winner1 = lastRoundMatches[i].getWinner()
+                winner2 = lastRoundMatches[i+1].getWinner()
+
+                # Avoid creating the same match again
+                if Match.objects.filter(Tournament=self).filter(Team1=winner1).filter(Team2=winner2).filter(Round=round).exists():
+                    continue
+                
+                else: 
                     match = Match(Date=None, Location=self.Location, Team1=winner1, Team2=winner2, isPool=False, Tournament=self, Round=round)
                     match.save()
 
@@ -123,8 +158,22 @@ class Tournament(models.Model):
     """
         Return only the matches in the knockout phase
     """
-    def filterKnockoutMatches(self):
-        return Match.objects.filter(Tournament=self).filter(isPool=False)
+    def filterKnockoutMatches(self, round=None):
+        if round == None:
+            return Match.objects.filter(Tournament=self).filter(isPool=False)
+        else:
+            return Match.objects.filter(Tournament=self).filter(isPool=False).filter(Round=round)
+    
+    """
+        Return a list of query each containing the matches having the index
+        as their round number
+    """
+    def matchesSortedbyRound(self):
+        rounds = []
+        for i in range (1,self.knockoutPhaseDepth()+1):
+            rounds.append(self.filterKnockoutMatches(i))
+        return rounds
+
 
 
 class Pool(models.Model):
@@ -207,7 +256,7 @@ class Match(models.Model):
     Score2 = models.IntegerField(null=True, blank=True)
     isPool = models.BooleanField(default=True, blank=True)
     Round = models.IntegerField(default=0, blank=True)
-    Pool = models.ForeignKey(Pool, null=True, on_delete=models.DO_NOTHING)
+    Pool = models.ForeignKey(Pool, null=True, blank=True, on_delete=models.DO_NOTHING)
     Tournament = models.ForeignKey(Tournament, null=True, on_delete=models.DO_NOTHING)
 
 
@@ -232,14 +281,28 @@ class Match(models.Model):
             return self.Team1
         elif self.Score2 > self.Score1:
             return self.Team2
+        
+        # Designate a random winner in case of draw
         else:
-            return self.Team1 if randint(0,1) else self.Team2
+            if randint(0,1):
+                self.Score1 += 1
+                return self.Team1
+            else:
+                self.Score2 += 1
+                return self.Team2
+           
 
     def __str__(self):
         if self.Score1!=None and self.Score2!=None:
             return f"match {self.Team1.Name} against {self.Team2.Name}, score : {self.getScoreString()} \nat : {self.Location}, {self.Date}"
         else:
             return f"match {self.Team1.Name} against {self.Team2.Name}, \nat : {self.Location}, {self.Date}"
+
+    def shortStr(self):
+        if self.Score1!=None and self.Score2!=None:
+            return f"{self.Team1.Name} {self.getScoreString()} {self.Team2.Name}"
+        else:
+            return f"{self.Team1.Name} : {self.Team2.Name}"
 
 class Comment(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
