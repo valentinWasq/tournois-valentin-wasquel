@@ -26,12 +26,12 @@
         </div>
         <div class="separator" style="height: 10px;"></div>
 
-        <ul>
-            {% for team, score in pool.getTeamsAndScores.items %}
-            <li class="link"><a class="linka" href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
-            <div class="separator" style="height: 10px;"></div>
-            {% endfor %}
-        </ul>
+            <ul>
+                {% for team, score in pool.getTeamsAndScores.items %}
+                <li class="link"><a class="linka" href="{% url 'tournament:teamDetail' team.id %}">{{team.Name}}</a></li>
+                <div class="separator" style="height: 10px;"></div>
+                {% endfor %}
+            </ul>
         {% endfor %}
     </ul>
     
@@ -41,7 +41,7 @@
         <div class="tree">
             
             {% for round in tournament.matchesSortedbyRound %}
-            <div class="round">
+                <div class="round">
                         <table>
                         
                         {% for match in round %}
@@ -73,7 +73,7 @@
                             
                         {% endfor %}
                         </table>
-                    </div>
+                </div>
                 
             {% endfor %}      
         </div>
@@ -89,6 +89,7 @@
     {% endif %}
     <div style="position:relative; height:50px; background-color: transparent;"></div>
     </div>
-{% endblock content %}
+
+    {% endblock content %}
 
 

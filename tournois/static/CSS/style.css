@@ -211,12 +211,12 @@ li {
   }
 
 
-  table {
+table {
     height:100%;
 }
 
 
-/* This part controls the style for the match tree */
+/* This part defines the style for the match tree */
 .tree{
     max-width: 1100px;
     margin: 0 auto;
